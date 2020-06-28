@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">DVH Play</string>
+
+    //bottom menu
+    <string name="title_home">Home</string>
+    <string name="title_film">Film</string>
+    <string name="title_TV">TV</string>
+    <string name="title_upload">Up load</string>
+    <string name="title_more">More</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    //Home
+    <string name="proposed">Proposed</string>
+    <string name="synthetic">Synthetic</string>
+    <string name="All">All</string>
+    <string name="hotVideo">Hot Video</string>
+
+    // bottom video
+    <string name="duration">Duration</string>
+    <string name="directors">Directors</string>
+    <string name="actor">Actor</string>
+    <string name="nation">Nation</string>
+    <string name="episodes">Episodes</string>
+    <string name="releaseYear">Release Year</string>
+    <string name="synopsis">Synopsis</string>
+</resources>
