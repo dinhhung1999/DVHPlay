@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/_135sdp"
-    android:layout_height="@dimen/_145sdp">
+    android:layout_width="@dimen/_140sdp"
+    android:layout_height="@dimen/_145sdp"
+    android:layout_marginLeft="@dimen/_7sdp">
     <LinearLayout
-        android:layout_marginLeft="@dimen/_7sdp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

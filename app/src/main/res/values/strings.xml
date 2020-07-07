@@ -1,11 +1,18 @@
 <resources>
     <string name="app_name">DVH Play</string>
-
+    
+    //MAIN
+    <string name="message_request_permission_read_phone_state">We need permission to continue</string>
+    <string name="tilte_dialog_check_network">No network connection</string>
+    <string name="OK">OK</string>
+    <string name="message_dialog">Turn on network connection</string>
+    <string name="retry">Retry</string>
+    <string name="exit">Exit</string>
     //bottom menu
     <string name="title_home">Home</string>
     <string name="title_film">Film</string>
     <string name="title_TV">TV</string>
-    <string name="title_upload">Up load</string>
+    <string name="title_my_media">My media</string>
     <string name="title_more">More</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -24,4 +31,15 @@
     <string name="episodes">Episodes</string>
     <string name="releaseYear">Release Year</string>
     <string name="synopsis">Synopsis</string>
+
+    // film fragment
+    <string name="TV_serie">TV series</string>
+    <string name="movie">Movie</string>
+    <string name="anime">Anime</string>
+    <string name="sport">Sport</string>
+
+    <string name="iTemToolbarTitleSearch">Search</string>
+
+    // PlayVideoActivity
+    <string name="checkNetworkPlayVideo">No network connection, please check again</string>
 </resources>

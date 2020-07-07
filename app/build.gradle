@@ -46,7 +46,8 @@ dependencies {
     implementation 'com.github.dueeeke:dk-tablayout:1.0.2' //tablayout
 
     implementation 'com.google.code.gson:gson:2.8.6'
-
+    implementation 'pub.devrel:easypermissions:2.0.0' //permissions
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'  //location
 
 
 }

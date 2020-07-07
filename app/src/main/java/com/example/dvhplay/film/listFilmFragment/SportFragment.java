@@ -1,27 +1,22 @@
-package com.example.dvhplay.home;
+package com.example.dvhplay.film.listFilmFragment;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.dvhplay.Api.Api;
-import com.example.dvhplay.MainActivity;
 import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
+import com.example.dvhplay.databinding.FragmentSportBinding;
 import com.example.dvhplay.video.AdapterVideo;
 import com.example.dvhplay.video.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
@@ -36,24 +31,14 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.dvhplay.databinding.FragmentHomeBinding;
 
-public class HomeFragment extends Fragment {
-    FragmentHomeBinding binding;
+public class SportFragment extends Fragment {
+    FragmentSportBinding binding;
     Api api = new Api();
     String json = "";
     AdapterVideo adapterVideo;
     VideoUlti videoUlti;
     List<VideoUlti> videoUtilList;
-
-    private static final String TAG = "HomeFragment" ;
-
-    public HomeFragment() {
-    }
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,18 +47,14 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
+
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_sport, container, false);
         class DoGetVideo extends AsyncTask<Void, Void, Void> {
             String result = "";
 
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                binding.tv.setVisibility(View.GONE);
-                binding.tvHotVideo.setVisibility(View.GONE);
-                binding.tvListProposed.setVisibility(View.GONE);
-                binding.tvListSynthetic.setVisibility(View.GONE);
                 binding.prBar.setVisibility(View.VISIBLE);
             }
 
@@ -98,11 +79,7 @@ public class HomeFragment extends Fragment {
                 super.onPostExecute(aVoid);
                 json = result;
                 getJsonArray(json);
-                binding.tv.setVisibility(View.VISIBLE);
                 binding.prBar.setVisibility(View.GONE);
-                binding.tvHotVideo.setVisibility(View.VISIBLE);
-                binding.tvListProposed.setVisibility(View.VISIBLE);
-                binding.tvListSynthetic.setVisibility(View.VISIBLE);
             }
 
             public void getJsonArray(String json) {
@@ -115,7 +92,7 @@ public class HomeFragment extends Fragment {
                         String title = jo.getString("title");
                         String url = jo.getString("file_mp4");
                         String urlImage = jo.getString("avatar");
-                        videoUlti = new VideoUlti(null, null,   null, null, null, title, urlImage, null, url, null, null, null, null, null, null, null, null);
+                        videoUlti = new VideoUlti(null, null, null, null, null, title, urlImage, null, url, null, null, null, null, null, null, null, null);
 
                         videoUtilList.add(videoUlti);
                     }
@@ -128,17 +105,9 @@ public class HomeFragment extends Fragment {
                             startActivity(intent);
                         }
                     });
-                            RecyclerView.LayoutManager layoutManagerHotVideo = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
-                            binding.rvHotvideo.setLayoutManager(layoutManagerHotVideo);
-                            binding.rvHotvideo.setAdapter(adapterVideo);
-
-                            RecyclerView.LayoutManager layoutManagerSynthetic = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
-                            binding.rvSynthetic.setLayoutManager(layoutManagerSynthetic);
-                            binding.rvSynthetic.setAdapter(adapterVideo);
-
-                            RecyclerView.LayoutManager layoutManagerrvProposed = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
-                            binding.rvProposed.setLayoutManager(layoutManagerrvProposed);
-                            binding.rvProposed.setAdapter(adapterVideo);
+                    RecyclerView.LayoutManager GridlayoutManager = new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false);
+                    binding.rvSport.setLayoutManager(GridlayoutManager);
+                    binding.rvSport.setAdapter(adapterVideo);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -11,16 +11,55 @@
                 android:id="@+id/rlTop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+                <VideoView
+                    android:id="@+id/vvPlayVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
                 <ProgressBar
                     android:layout_centerInParent="true"
                     android:id="@+id/prBar"
                     android:visibility="gone"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"/>
-                <VideoView
-                    android:id="@+id/vvPlayVideo"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:id="@+id/llMessage"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:background="@color/colorBackgroundMessage"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp">
+                    <ImageView
+                        android:id="@+id/imMessage"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"/>
+                    <TextView
+                        android:id="@+id/tvMessage"
+                        android:layout_gravity="center"
+                        android:textColor="@color/design_default_color_surface"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <TextView
+                    android:id="@+id/tvChangeTime"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:textColor="@color/design_default_color_surface"
+                    android:background="@color/colorBackgroundMessage"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/imLock"
+                    android:visibility="gone"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:src="@drawable/ic_round_lock_open_24"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"/>
                 <LinearLayout
                     android:layout_centerInParent="true"
                     android:gravity="center"
@@ -33,32 +72,39 @@
                         android:id="@+id/imReplay10s"
                         android:layout_marginRight="@dimen/_8sdp"
                         android:src="@drawable/ic_round_replay_10_24"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"/>
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"/>
                     <ImageView
                         android:id="@+id/imSkipPrevious"
                         android:layout_marginRight="@dimen/_16sdp"
                         android:src="@drawable/ic_round_skip_previous_hide_24"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"/>
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"/>
                     <ImageView
                         android:id="@+id/imPauseOrResume"
                         android:layout_marginRight="@dimen/_16sdp"
                         android:src="@drawable/ic_round_pause_24"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"/>
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_45sdp"/>
+                    <ImageView
+                        android:id="@+id/imRepPlay"
+                        android:visibility="gone"
+                        android:layout_marginRight="@dimen/_16sdp"
+                        android:src="@drawable/ic_round_replay_24"
+                        android:layout_width="@dimen/_45sdp"
+                        android:layout_height="@dimen/_45sdp"/>
                     <ImageView
                         android:id="@+id/imSkipNext"
                         android:layout_marginRight="@dimen/_8sdp"
                         android:src="@drawable/ic_round_skip_next_hide_24"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"/>
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"/>
                     <ImageView
                         android:id="@+id/imForward10s"
                         android:layout_marginRight="@dimen/_5sdp"
                         android:src="@drawable/ic_round_forward_10_24"
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"/>
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/llBackandSetting"
@@ -75,8 +121,8 @@
                         <ImageView
                             android:id="@+id/imBack"
                             android:src="@drawable/ic_round_arrow_back_24"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"/>
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"/>
                     </LinearLayout>
                     <LinearLayout
                         android:gravity="right"
@@ -86,8 +132,8 @@
                         <ImageView
                             android:id="@+id/imSetting"
                             android:src="@drawable/ic_round_settings_24"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"/>
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"/>
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -101,7 +147,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:text="1434"
                         android:id="@+id/tvCurrentTime"
                         android:textColor="@color/design_default_color_surface"
                         android:layout_gravity="center_vertical|left"
@@ -115,7 +160,6 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content">
                         <TextView
-                            android:text="1232"
                             android:id="@+id/tvTotalTime"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="@dimen/_5sdp"
@@ -125,8 +169,8 @@
                         <ImageView
                             android:id="@+id/imFullScreen"
                             android:src="@drawable/ic_round_fullscreen_24"
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"/>
+                            android:layout_width="@dimen/_25sdp"
+                            android:layout_height="@dimen/_25sdp"/>
                     </LinearLayout>
                 </LinearLayout>
                 <SeekBar
@@ -140,24 +184,6 @@
                     android:maxWidth="@dimen/_15sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-                <LinearLayout
-                    android:id="@+id/llVideo"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:id="@+id/llBrightness"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:id="@+id/llVolume"
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
             </RelativeLayout>
             <androidx.core.widget.NestedScrollView
                 android:background="@color/colorBackgountBottomMenu"

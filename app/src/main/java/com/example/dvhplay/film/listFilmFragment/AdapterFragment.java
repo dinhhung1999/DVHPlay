@@ -1,4 +1,4 @@
-package com.example.dvhplay.helper;
+package com.example.dvhplay.film.listFilmFragment;
 
 import android.content.Context;
 import android.util.Log;
@@ -19,7 +19,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class AdapterFragment extends FragmentPagerAdapter {
     private Context mycontext;
     int totalTabs;
-    private static final String TAG = "MainActivity";
     public AdapterFragment(Context context, FragmentManager fm, int totalTabs){
         super(fm);
         mycontext = context;
@@ -31,38 +30,22 @@ public class AdapterFragment extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                HomeFragment homeFragment = new HomeFragment();
-                return homeFragment;
+                TvSerieFragment tvSerieFragment = new TvSerieFragment();
+                return tvSerieFragment;
             case 1:
-                FilmFragment filmFragment = new FilmFragment();
-                return filmFragment;
+                MovieFragment movieFragment = new MovieFragment();
+                return movieFragment;
             case 2:
-                TVFragment tvFragment = new TVFragment();
-                return tvFragment;
+                AnimeFragment animeFragment = new AnimeFragment();
+                return animeFragment;
             case 3:
-                MoreFragment moreFragment = new MoreFragment();
-                return moreFragment;
+                SportFragment sportFragment = new SportFragment();
+                return sportFragment;
         }
         return null;
     }
-    @Override
-    public CharSequence getPageTitle(int position){
-        switch (position) {
-            case 0:
-                return getPageTitle(R.string.title_home);
-            case 1:
-                return getPageTitle(R.string.title_film);
-            case 2:
-                return getPageTitle(R.string.title_TV);
-            case 3:
-                return getPageTitle(R.string.title_more);
-        }
-        return null;
-    }
-
     @Override
     public int getCount() {
         return totalTabs;
     }
-
 }
