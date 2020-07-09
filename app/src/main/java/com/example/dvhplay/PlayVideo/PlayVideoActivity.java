@@ -125,6 +125,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     boolean isPlaying = true;
     // kiểm tra load
     private boolean isLoad = true;
+    Intent intent;
     Handler handler = new Handler();
     CheckNetwork checkNetwork = new CheckNetwork();
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -161,8 +162,8 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_play_video);
-        Intent intent = getIntent();
         setInvisibility();
+         intent = getIntent();
         if (intent.getFlags()==-1){
             path = intent.getStringExtra("path");
         }else {
@@ -289,9 +290,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     binding.getRoot().setLayoutParams(params);
                     fullscreen = false;
                 } else {
-                    binding.vvPlayVideo.stopPlayback();
-                    finish();
-                }
+                        binding.vvPlayVideo.stopPlayback();
+                        finish();
+                    }
             }
         });
         binding.imReplay10s.setOnClickListener(new View.OnClickListener() {
@@ -365,23 +366,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 }
             }
         });
-//        binding.rlTop.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                switch (keyCode){
-//                    case KeyEvent.KEYCODE_VOLUME_UP:{
-//                        setChangeVolume(ADD_FLAG);
-//                        return true;
-//                        }
-//                    case KeyEvent.ACTION_DOWN:{
-//                        setChangeVolume(SUB_FLAG);
-//                        return true;
-//                    }
-//                    default: break;
-//                }
-//                return false;
-//            }
-//        });
         binding.imRepPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -393,7 +377,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
 
     private void initOnjects() {
         binding.nbVideo.setOnSeekBarChangeListener(this);
-        Intent intent = getIntent();
         if (intent.getFlags()==-1){
             binding.vvPlayVideo.setVideoPath(path);
         }else {

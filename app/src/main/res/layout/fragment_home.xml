@@ -9,8 +9,8 @@
             android:layout_height="match_parent">
             <ProgressBar
                 android:id="@+id/prBar"
-                android:visibility="gone"
-                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_250sdp"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"/>
             <LinearLayout
@@ -86,37 +86,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
-                <TextView
-                    android:text="3"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/><TextView
-                android:text="3"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"/>
             </LinearLayout>
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

@@ -130,7 +130,6 @@
                         android:layout_height="@dimen/_20sdp"/>
                     <TextView
                         style="@style/styleTextMenuBottom"
-
                         android:id="@+id/tvMore"
                         android:text="@string/title_more"
                         android:layout_width="wrap_content"

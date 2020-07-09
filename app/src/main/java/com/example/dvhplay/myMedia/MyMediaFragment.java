@@ -50,8 +50,6 @@ public class MyMediaFragment extends Fragment {
         binding.lvVideoInDevice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                binding.vv.setVideoPath(videoInDeviceList.get(position).getPath());
-//                binding.vv.start();
                 videoInDevice = videoInDeviceList.get(position);
                 Intent intent = new Intent(getActivity().getBaseContext(),PlayVideoActivity.class);
                 intent.setFlags(-1);

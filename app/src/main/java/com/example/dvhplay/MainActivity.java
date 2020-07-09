@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 setColorDefault();
                 binding.imMyMedia.setImageResource(R.drawable.ic_round_video_library_if_click_24);
                 binding.tvMyMedia.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
-                CheckInternetInRefresh();
                 FLAG_FRAGMENT = 4;
                 getFragment(MyMediaFragment.newInstance());
             }
@@ -214,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void setRefresh(){
-        switch (FLAG_FRAGMENT){
+        switch (FLAG_FRAGMENT ){
             case 1:
                 setColorDefault();
                 binding.imHome.setImageResource(R.drawable.ic_round_home_24_if_click);
@@ -240,7 +239,6 @@ public class MainActivity extends AppCompatActivity {
                 setColorDefault();
                 binding.imMyMedia.setImageResource(R.drawable.ic_round_video_library_if_click_24);
                 binding.tvMyMedia.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
-                CheckInternetInRefresh();
                 getFragment(MyMediaFragment.newInstance());
                 break;
             case 5:

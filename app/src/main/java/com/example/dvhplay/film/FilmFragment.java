@@ -41,18 +41,18 @@ public class FilmFragment extends Fragment {
         binding.tabLayoutTop.setTabGravity(binding.tabLayoutTop.GRAVITY_FILL);
         final AdapterFragment adapterFragment = new AdapterFragment(getActivity().getBaseContext(),getChildFragmentManager(),binding.tabLayoutTop.getTabCount());
         binding.vpFilm.setAdapter(adapterFragment);
-        binding.tabLayoutTop.post(new Runnable() {
-            @Override
-            public void run() {
+//        binding.tabLayoutTop.post(new Runnable() {
+//            @Override
+//            public void run() {
+                binding.tabLayoutTop.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#FFF87E00"));
                 binding.tabLayoutTop.setupWithViewPager(binding.vpFilm);
                 binding.tabLayoutTop.getTabAt(0).setText(R.string.TV_serie);
                 binding.tabLayoutTop.getTabAt(1).setText(R.string.movie);
                 binding.tabLayoutTop.getTabAt(2).setText(R.string.anime);
                 binding.tabLayoutTop.getTabAt(3).setText(R.string.sport);
                 binding.tabLayoutTop.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimaryDark));
-                binding.tabLayoutTop.setTabTextColors(Color.parseColor("#ffffff"), Color.parseColor("#FFF87E00"));
-            }
-        });
+//            }
+//        });
         return binding.getRoot();
     }
 }
