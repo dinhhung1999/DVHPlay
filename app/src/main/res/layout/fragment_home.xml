@@ -10,7 +10,7 @@
             <ProgressBar
                 android:id="@+id/prBar"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_250sdp"
+                android:layout_centerInParent="true"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"/>
             <LinearLayout
@@ -27,6 +27,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_150sdp"/>
                 <LinearLayout
+                    android:id="@+id/llHotvideo"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:layout_marginBottom="@dimen/_7sdp"
                     android:background="@color/colorBackgroundItemMain"
@@ -49,6 +51,8 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/llProposed"
+                    android:visibility="gone"
                     android:layout_marginBottom="@dimen/_7sdp"
                     android:background="@color/colorBackgroundItemMain"
                     android:orientation="vertical"
@@ -68,6 +72,8 @@
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/llSynthetic"
+                    android:visibility="gone"
                     android:layout_marginBottom="@dimen/_7sdp"
                     android:background="@color/colorBackgroundItemMain"
                     android:orientation="vertical"

@@ -38,7 +38,7 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.ViewHoder> {
     public void onBindViewHolder(@NonNull AdapterVideo.ViewHoder holder, int position) {
         final VideoUlti videoUlti = videoUltiList.get(position);
         holder.tvTitle.setText(videoUlti.getTitle());
-        Glide.with(holder.imAvatar).load(videoUlti.getAvatarUrl()).into(holder.imAvatar);
+        Glide.with(holder.imAvatar).load(videoUlti.getAvatar()).into(holder.imAvatar);
         holder.tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

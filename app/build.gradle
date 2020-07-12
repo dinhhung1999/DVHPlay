@@ -48,6 +48,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'pub.devrel:easypermissions:2.0.0' //permissions
     implementation 'com.google.android.gms:play-services-maps:17.0.0'  //location
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+
+    implementation 'com.google.code.gson:gson:2.6.2'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
 
 
 }

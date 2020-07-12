@@ -169,7 +169,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         }else {
             videoUlti = (VideoUlti) intent.getSerializableExtra("video");
             binding.tvTitleVideo.setText(videoUlti.getTitle());
-            url = videoUlti.getUrlVideo();
+            url = videoUlti.getFile_mp4();
         }
         binding.vvPlayVideo.requestFocus();
         initOnjects();

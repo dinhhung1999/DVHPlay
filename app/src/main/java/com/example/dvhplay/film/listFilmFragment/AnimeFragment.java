@@ -7,13 +7,20 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.dvhplay.Api.Api;
+import com.example.dvhplay.Api.APIUtils;
+import com.example.dvhplay.Api.RetrofitClient;
+import com.example.dvhplay.Api.iVideoService;
 import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.FragmentAnimeBinding;
@@ -34,11 +41,12 @@ import java.util.List;
 
 public class AnimeFragment extends Fragment {
     FragmentAnimeBinding binding;
-    Api api = new Api();
+    APIUtils APIUtils = new APIUtils();
     String json = "";
     AdapterVideo adapterVideo;
     VideoUlti videoUlti;
     List<VideoUlti> videoUtilList;
+    iVideoService videoService;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,53 +56,17 @@ public class AnimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_anime, container, false);
-        class DoGetVideo extends AsyncTask<Void, Void, Void> {
-            String result = "";
-
+        getVideosList();
+        return binding.getRoot();
+    }
+    public void getVideosList(){
+        videoService = RetrofitClient.getRetrofitClient(APIUtils.getBASE_API()).create(iVideoService.class);
+        Call<List<VideoUlti>> call = videoService.getVideo();
+        call.enqueue(new Callback<List<VideoUlti>>() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                binding.prBar.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-                try {
-                    URL url = new URL(api.getApiHome());
-                    URLConnection urlConnection = url.openConnection();
-                    InputStream is = urlConnection.getInputStream();
-                    int byteCharacter;
-                    while ((byteCharacter = is.read()) != -1) {
-                        result += (char) byteCharacter;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                json = result;
-                getJsonArray(json);
-                binding.prBar.setVisibility(View.GONE);
-            }
-
-            public void getJsonArray(String json) {
-                try {
-                    videoUtilList = new ArrayList<>();
-                    JSONArray jsonArray = new JSONArray(json);
-                    int lenght = jsonArray.length();
-                    for (int i = 0; i < lenght; i++) {
-                        JSONObject jo = jsonArray.getJSONObject(i);
-                        String title = jo.getString("title");
-                        String url = jo.getString("file_mp4");
-                        String urlImage = jo.getString("avatar");
-                        videoUlti = new VideoUlti(null, null, null, null, null, title, urlImage, null, url, null, null, null, null, null, null, null, null);
-
-                        videoUtilList.add(videoUlti);
-                    }
+            public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
+                if (response.isSuccessful()){
+                    videoUtilList = response.body();
                     adapterVideo = new AdapterVideo(videoUtilList);
                     adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
                         @Override
@@ -107,12 +79,26 @@ public class AnimeFragment extends Fragment {
                     RecyclerView.LayoutManager GridlayoutManager = new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false);
                     binding.rvAnime.setLayoutManager(GridlayoutManager);
                     binding.rvAnime.setAdapter(adapterVideo);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    binding.prBar.setVisibility(View.GONE);
+                } else {
+                    int sc = response.code();
+                    switch (sc) {
+                        case 400:
+                            Log.e("Error 400", "Bad Request");
+                            break;
+                        case 404:
+                            Log.e("Error 404", "Not Found");
+                            break;
+                        default:
+                            Log.e("Error", "Generic Error");
+                    }
                 }
             }
-        }
-        new DoGetVideo().execute();
-        return binding.getRoot();
+
+            @Override
+            public void onFailure(Call<List<VideoUlti>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
     }
 }
