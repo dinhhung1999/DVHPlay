@@ -11,4 +11,5 @@
     <color name="colorBackgroundMessage">#80706C6C</color>
     <color name="colorBackground">#000</color>
     <color name="colorBackgroundItemMain">#181E21</color>
+    <color name="colorButtonDialog">#F87E00</color>
 </resources>

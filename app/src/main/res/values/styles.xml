@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-<!--        <item name="colorAccent">@color/colorWhite</item>-->
+        <item name="colorAccent">@color/colorWhite</item>
         <item name="title">Play Video</item>
     </style>
     <style name="styleTextMenuBottom">

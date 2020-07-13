@@ -9,6 +9,7 @@
             android:layout_height="match_parent">
             <ProgressBar
                 android:id="@+id/prBar"
+                android:layout_marginTop="@dimen/_500sdp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerInParent="true"
                 android:layout_width="@dimen/_40sdp"

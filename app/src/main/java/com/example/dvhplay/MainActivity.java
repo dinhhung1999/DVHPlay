@@ -2,12 +2,14 @@ package com.example.dvhplay;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     public void CheckInternet(){
         if (!checkNetwork.isNetworkConnected(getBaseContext())|| !checkNetwork.isInternetAvailable(getBaseContext())){
             binding.fullScreen.setVisibility(View.GONE);
-            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+            final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                     .setCancelable(false)
                     .setTitle(R.string.tilte_dialog_check_network)
                     .setMessage(R.string.message_dialog)
@@ -186,13 +188,21 @@ public class MainActivity extends AppCompatActivity {
                         }
                     })
                     .create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(getColor(R.color.colorButtonDialog));
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorButtonDialog));
+                }
+            });
             alertDialog.show();
         }
         else binding.fullScreen.setVisibility(View.VISIBLE);
     }
     public void CheckInternetInRefresh(){
         if (!checkNetwork.isNetworkConnected(getBaseContext())|| !checkNetwork.isInternetAvailable(getBaseContext())){
-            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+            final AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
                     .setCancelable(false)
                     .setTitle(R.string.tilte_dialog_check_network)
                     .setMessage(R.string.checkNetworkPlayVideo)
@@ -209,6 +219,14 @@ public class MainActivity extends AppCompatActivity {
                         }
                     })
                     .create();
+            alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @RequiresApi(api = Build.VERSION_CODES.M)
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(getColor(R.color.colorButtonDialog));
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.colorButtonDialog));
+                }
+            });
             alertDialog.show();
         }
     }

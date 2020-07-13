@@ -1,7 +1,6 @@
 package com.example.dvhplay.film.listFilmFragment;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -27,23 +26,14 @@ import com.example.dvhplay.video.AdapterVideo;
 import com.example.dvhplay.video.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class TvSerieFragment extends Fragment {
     FragmentTvSerieBinding binding;
     APIUtils APIUtils = new APIUtils();
-    String json = "";
     AdapterVideo adapterVideo;
-    VideoUlti videoUlti;
     List<VideoUlti> videoUtilList;
     iVideoService videoService;
     @Override
