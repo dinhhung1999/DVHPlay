@@ -18,9 +18,13 @@
                 <ProgressBar
                     android:layout_centerInParent="true"
                     android:id="@+id/prBar"
-                    android:visibility="gone"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"/>
+<!--                <ProgressBar-->
+<!--                    android:layout_centerInParent="true"-->
+<!--                    android:id="@+id/pr"-->
+<!--                    android:layout_width="@dimen/_40sdp"-->
+<!--                    android:layout_height="@dimen/_40sdp"/>-->
                 <LinearLayout
                     android:id="@+id/llMessage"
                     android:visibility="gone"

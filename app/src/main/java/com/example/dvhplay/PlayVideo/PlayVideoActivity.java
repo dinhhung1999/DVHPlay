@@ -12,38 +12,25 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.util.Pair;
-import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.example.dvhplay.MainActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.ActivityPlayVideoBinding;
 import com.example.dvhplay.helper.CheckNetwork;
 import com.example.dvhplay.video.VideoUlti;
-import com.facebook.stetho.common.StringUtil;
+import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 
 public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "PlayVideoActivity";
@@ -125,6 +112,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     boolean isPlaying = true;
     // kiểm tra load
     private boolean isLoad = true;
+    private static final int MAINACTIVITY = 2000;
     Intent intent;
     Handler handler = new Handler();
     CheckNetwork checkNetwork = new CheckNetwork();
@@ -155,7 +143,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             return false;
         }
     });
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,7 +150,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         getSupportActionBar().hide();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_play_video);
         setInvisibility();
-         intent = getIntent();
+        intent = getIntent();
         if (intent.getFlags()==-1){
             path = intent.getStringExtra("path");
         }else {
@@ -184,13 +171,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 if (!fullscreen) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-//                            startX = event.getX();
-//                            startY = event.getY();
                             downTime = event.getDownTime();
                             return true;
                         case MotionEvent.ACTION_UP:
-//                            endX = event.getX();
-//                            endY = event.getY();
                             eventTime = event.getEventTime();
                             long durationHold = eventTime - downTime;
                                 if (durationHold < CLICK_ACTION_THRESHOLD && isLoad ){
@@ -209,8 +192,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                             downTime = event.getDownTime();
                             return true;
                         case MotionEvent.ACTION_UP:
-//                            endX = event.getX();
-//                            endY = event.getY();
                             eventTime = event.getEventTime();
                             long duration = eventTime - downTime;
                             if (duration < CLICK_ACTION_THRESHOLD) {
@@ -290,7 +271,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     binding.getRoot().setLayoutParams(params);
                     fullscreen = false;
                 } else {
-                        binding.vvPlayVideo.stopPlayback();
+                        binding.vvPlayVideo.pause();
                         finish();
                     }
             }
@@ -390,8 +371,8 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     }
     private void playVideo() {
         isLoad = false;
-        binding.vvPlayVideo.start();
         binding.prBar.setVisibility(View.VISIBLE);
+        binding.vvPlayVideo.start();
         binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -413,8 +394,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             binding.nbVideo.setMax(binding.vvPlayVideo.getDuration());
             binding.tvCurrentTime.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getCurrentPosition()));
             binding.tvTotalTime.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getDuration()));
-            onLoading();
-            if (binding.nbVideo.getProgress()==100) {
+            if (binding.nbVideo.getProgress()==binding.nbVideo.getMax()) {
                 binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_hide_24);
                 binding.imPauseOrResume.setVisibility(View.GONE);
                 binding.imRepPlay.setVisibility(View.VISIBLE);
@@ -519,7 +499,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         {
             binding.prBar.setVisibility(View.VISIBLE);
             binding.imPauseOrResume.setVisibility(View.INVISIBLE);
-            checkInternetWhilePlay();
         }else {
             binding.prBar.setVisibility(View.GONE);
             binding.imPauseOrResume.setVisibility(View.VISIBLE);

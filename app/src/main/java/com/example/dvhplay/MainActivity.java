@@ -215,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                     .setNeutralButton(R.string.exit, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                            finishAffinity();
                         }
                     })
                     .create();

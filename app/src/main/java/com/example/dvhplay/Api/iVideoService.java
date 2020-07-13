@@ -25,6 +25,6 @@ public interface iVideoService   {
 //    @DELETE("delete/{id}")
 //    Call deleteVideo(@Path("id") int id);
 
-    @GET("Categoly")
+    @GET("getVideoHot")
     Call<List<VideoUlti>> getVideo();
 }
