@@ -25,8 +25,11 @@ import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
 import com.example.dvhplay.R;
+import com.example.dvhplay.ServiceAndBroadcast.ServiceNotification;
 import com.example.dvhplay.databinding.ActivityPlayVideoBinding;
 import com.example.dvhplay.helper.CheckNetwork;
+import com.example.dvhplay.helper.VFMSharePreference;
+import com.example.dvhplay.home.sliderImage.SliderItem;
 import com.example.dvhplay.video.VideoUlti;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -37,10 +40,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
 
     ActivityPlayVideoBinding binding;
     private int WITDH_SCREEN;
-    VideoUlti videoUlti;
-    String url = "";
-    String path = "";
-    Utilities utilities;
     // Cập nhật thời gian phát
     private static final int UPDATE_PLAY_TIME = 0x01;
     private static final int UPDATE_TIME = 800;
@@ -112,6 +111,12 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     boolean isPlaying = true;
     // kiểm tra load
     private boolean isLoad = true;
+    VideoUlti videoUlti;
+    SliderItem sliderItem;
+    String url = "";
+    String path = "";
+    Utilities utilities;
+    VFMSharePreference sharePreference = new VFMSharePreference(this);
     private static final int MAINACTIVITY = 2000;
     Intent intent;
     Handler handler = new Handler();
@@ -149,15 +154,26 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_play_video);
+        //khởi chạy service
+        startService(new Intent(getBaseContext(), ServiceNotification.class));
         setInvisibility();
         intent = getIntent();
-        if (intent.getFlags()==-1){
-            path = intent.getStringExtra("path");
-        }else {
-            videoUlti = (VideoUlti) intent.getSerializableExtra("video");
-            binding.tvTitleVideo.setText(videoUlti.getTitle());
-            url = videoUlti.getFile_mp4();
+        switch (intent.getFlags()){
+            case -1:
+                path = intent.getStringExtra("path");
+                break;
+            case 0:
+                sliderItem = (SliderItem) intent.getSerializableExtra("slideItem");
+                binding.tvTitleVideo.setText(sliderItem.getTitle());
+                url = sliderItem.getFile_mp4();
+                break;
+            default:
+                videoUlti = (VideoUlti) intent.getSerializableExtra("video");
+                binding.tvTitleVideo.setText(videoUlti.getTitle());
+                url = videoUlti.getFile_mp4();
+                break;
         }
+        sharePreference.putStringValue("title", (String) binding.tvTitleVideo.getText());
         binding.vvPlayVideo.requestFocus();
         initOnjects();
         playVideo();
@@ -272,6 +288,9 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     fullscreen = false;
                 } else {
                         binding.vvPlayVideo.pause();
+//                        Intent intent = new Intent();
+//                        intent.setClass(getBaseContext(), ServiceNotification.class);
+//                        getBaseContext().stopService(intent);
                         finish();
                     }
             }
@@ -619,5 +638,15 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     .create();
             alertDialog.show();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

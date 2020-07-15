@@ -64,6 +64,7 @@ public class SportFragment extends Fragment {
                         public void setItemOnClickVideo(VideoUlti videoUlti) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
                             intent.putExtra("video", (Serializable) videoUlti);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                             startActivity(intent);
                         }
                     });

@@ -1,5 +1,6 @@
 package com.example.dvhplay.Api;
 
+import com.example.dvhplay.home.sliderImage.SliderItem;
 import com.example.dvhplay.video.VideoUlti;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface iVideoService   {
 
     @GET("getVideoHot")
     Call<List<VideoUlti>> getVideo();
+    @GET("getVideoHot")
+    Call<List<SliderItem>> getSlider();
 }

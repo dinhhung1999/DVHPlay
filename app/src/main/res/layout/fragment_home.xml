@@ -9,8 +9,7 @@
             android:layout_height="match_parent">
             <ProgressBar
                 android:id="@+id/prBar"
-                android:layout_marginTop="@dimen/_500sdp"
-                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_450sdp"
                 android:layout_centerInParent="true"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"/>
@@ -18,21 +17,23 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/tv"
-                    android:background="#fff"
-                    android:gravity="center"
-                    android:textColor="#000"
-                    android:textSize="@dimen/_50sdp"
-                    android:text="Slider Image"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_slider"
+                    android:background="@color/colorBackground"
+                    android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_150sdp"/>
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_12sdp">
+                    <com.smarteist.autoimageslider.SliderView
+                        android:id="@+id/imageSilde"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_140sdp"/>
+                </androidx.cardview.widget.CardView>
                 <LinearLayout
                     android:id="@+id/llHotvideo"
                     android:visibility="gone"
                     android:layout_marginTop="@dimen/_7sdp"
                     android:layout_marginBottom="@dimen/_7sdp"
-                    android:background="@color/colorBackgroundItemMain"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -51,11 +52,32 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/rl_ads"
+                    android:visibility="gone"
+                    android:layout_marginLeft="@dimen/_7sdp"
+                    android:layout_marginRight="@dimen/_7sdp"
+                    android:background="@drawable/background_ads"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp">
+                    <ImageView
+                        android:id="@+id/imClose"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_round_close_24"
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"/>
+                    <TextView
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="Đây là quảng cáo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </RelativeLayout>
                 <LinearLayout
                     android:id="@+id/llProposed"
                     android:visibility="gone"
                     android:layout_marginBottom="@dimen/_7sdp"
-                    android:background="@color/colorBackgroundItemMain"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -76,7 +98,6 @@
                     android:id="@+id/llSynthetic"
                     android:visibility="gone"
                     android:layout_marginBottom="@dimen/_7sdp"
-                    android:background="@color/colorBackgroundItemMain"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

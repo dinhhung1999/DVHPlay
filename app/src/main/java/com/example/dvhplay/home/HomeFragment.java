@@ -1,6 +1,7 @@
 package com.example.dvhplay.home;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -21,6 +22,9 @@ import com.example.dvhplay.Api.APIUtils;
 import com.example.dvhplay.Api.RetrofitClient;
 import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
+import com.example.dvhplay.home.sliderImage.SliderImageAdapter;
+import com.example.dvhplay.home.sliderImage.SliderItem;
+import com.example.dvhplay.home.sliderImage.iItemOnClickSlider;
 import com.example.dvhplay.video.AdapterVideo;
 import com.example.dvhplay.video.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
@@ -38,15 +42,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.dvhplay.databinding.FragmentHomeBinding;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 public class HomeFragment extends Fragment {
     FragmentHomeBinding binding;
     APIUtils APIUtils = new APIUtils();
-    String json = "";
     AdapterVideo adapterVideo;
-    VideoUlti videoUlti;
     iVideoService videoService;
     List<VideoUlti> videoUtilList = new ArrayList<>();
+    List<SliderItem> sliderItemList = new ArrayList<>();
+    SliderImageAdapter sliderImageAdapter;
 
     private static final String TAG = "HomeFragment" ;
 
@@ -65,8 +73,64 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
+        getSliderImage();
         getVideosList();
+        binding.imClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.rlAds.setVisibility(View.GONE);
+            }
+        });
         return binding.getRoot();
+    }public void getSliderImage() {
+        videoService = RetrofitClient.getRetrofitClient(APIUtils.getBASE_API()).create(iVideoService.class);
+        Call<List<SliderItem>> call = videoService.getSlider();
+        call.enqueue(new Callback<List<SliderItem>>() {
+            @Override
+            public void onResponse(Call<List<SliderItem>> call, Response<List<SliderItem>> response) {
+                if (response.isSuccessful()) {
+                    sliderItemList = response.body();
+                    sliderImageAdapter = new SliderImageAdapter(sliderItemList);
+                    sliderImageAdapter.setiItemOnClickSlider(new iItemOnClickSlider() {
+                        @Override
+                        public void setItemOnClickSlider(SliderItem sliderItem) {
+                            Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
+                            intent.setFlags(0);
+                            intent.putExtra("slideItem", (Serializable) sliderItem);
+                            startActivity(intent);
+                        }
+                    });
+                    binding.cvSlider.setVisibility(View.VISIBLE);
+                    binding.imageSilde.setSliderAdapter(sliderImageAdapter);
+                    binding.imageSilde.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using SliderLayout.IndicatorAnimations. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+                    binding.imageSilde.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+                    binding.imageSilde.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+                    binding.imageSilde.setIndicatorSelectedColor(Color.WHITE);
+                    binding.imageSilde.setIndicatorUnselectedColor(Color.GRAY);
+                    binding.imageSilde.setIndicatorMarginCustom(0,0,0,450);
+                    binding.imageSilde.setScrollTimeInSec(3);
+                    binding.imageSilde.setAutoCycle(true);
+                    binding.imageSilde.startAutoCycle();
+                } else {
+                    int sc = response.code();
+                    switch (sc) {
+                        case 400:
+                            Log.e("Error 400", "Bad Request");
+                            break;
+                        case 404:
+                            Log.e("Error 404", "Not Found");
+                            break;
+                        default:
+                            Log.e("Error", "Generic Error");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SliderItem>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
     }
     public void getVideosList(){
         videoService = RetrofitClient.getRetrofitClient(APIUtils.getBASE_API()).create(iVideoService.class);
@@ -81,10 +145,12 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void setItemOnClickVideo(VideoUlti videoUlti) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                             intent.putExtra("video", (Serializable) videoUlti);
                             startActivity(intent);
                         }
                     });
+                    binding.rlAds.setVisibility(View.VISIBLE);
                     binding.llHotvideo.setVisibility(View.VISIBLE);
                     RecyclerView.LayoutManager layoutManagerHotVideo = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
                     binding.rvHotvideo.setLayoutManager(layoutManagerHotVideo);

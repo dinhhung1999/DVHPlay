@@ -5,6 +5,7 @@
     android:layout_height="@dimen/_145sdp"
     android:layout_marginLeft="@dimen/_7sdp">
     <LinearLayout
+        android:id="@+id/llVideo"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
