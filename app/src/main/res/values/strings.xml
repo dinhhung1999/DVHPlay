@@ -24,13 +24,12 @@
     <string name="hotVideo">Hot Video</string>
 
     // bottom video
-    <string name="duration">Duration</string>
-    <string name="directors">Directors</string>
-    <string name="actor">Actor</string>
-    <string name="nation">Nation</string>
-    <string name="episodes">Episodes</string>
-    <string name="releaseYear">Release Year</string>
-    <string name="synopsis">Synopsis</string>
+    <string name="follow">Follow</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="comment">Comments</string>
+    <string name="hidecomment">Hide comments</string>
+    // comment film
+    <string name="etHint">Comment</string>
 
     // film fragment
     <string name="TV_serie">TV series</string>

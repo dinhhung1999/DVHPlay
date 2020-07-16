@@ -8,7 +8,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <RelativeLayout
-                android:id="@+id/rlTop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <VideoView
@@ -193,76 +192,120 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
-                        android:layout_margin="@dimen/_7sdp"
-                        android:textStyle="bold"
-                        android:id="@+id/tvTitleVideo"
-                        android:textColor="@color/colorBackgroundMain"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
                     <LinearLayout
-                        android:layout_margin="@dimen/_7sdp"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/tvTitleVideo"
+                            android:layout_marginLeft="@dimen/_7sdp"
+                            android:layout_marginTop="@dimen/_7sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorBackgroundMain"
+                            android:layout_width="@dimen/_140sdp"
+                            android:layout_height="wrap_content"/>
+                       <LinearLayout
+                           android:gravity="right"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content">
+                           <LinearLayout
+                               android:id="@+id/llfollow"
+                               android:orientation="vertical"
+                               android:layout_margin="@dimen/_7sdp"
+                               android:gravity="center"
+                               android:layout_width="@dimen/_50sdp"
+                               android:layout_height="wrap_content">
+                               <ImageView
+                                   android:id="@+id/imFollow"
+                                   android:layout_marginBottom="@dimen/_5sdp"
+                                   android:src="@drawable/ic_round_favorite_24"
+                                   android:layout_width="@dimen/_15sdp"
+                                   android:layout_height="@dimen/_15sdp"/>
+                               <TextView
+                                   android:id="@+id/tvFollow"
+                                   android:gravity="center"
+                                   android:textColor="@color/colorBackgroundDefaul"
+                                   android:text="@string/follow"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"/>
+                           </LinearLayout>
+                           <LinearLayout
+                               android:id="@+id/llComment"
+                               android:orientation="vertical"
+                               android:gravity="center"
+                               android:layout_margin="@dimen/_7sdp"
+                               android:layout_width="@dimen/_80sdp"
+                               android:layout_height="wrap_content">
+                               <ImageView
+                                   android:id="@+id/imComment"
+                                   android:layout_marginBottom="@dimen/_5sdp"
+                                   android:src="@drawable/ic_round_chat_24"
+                                   android:layout_width="@dimen/_15sdp"
+                                   android:layout_height="@dimen/_15sdp"/>
+                               <TextView
+                                   android:id="@+id/tvComment"
+                                   android:text="@string/comment"
+                                   android:textColor="@color/colorBackgroundDefaul"
+                                   android:layout_width="wrap_content"
+                                   android:layout_height="wrap_content"/>
+                           </LinearLayout>
+                       </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llCommentContent"
+                        android:visibility="gone"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView
-                            android:text="@string/duration"
-                            android:id="@+id/tvDuration"
-                            android:textStyle="bold"
-                            android:textColor="@color/design_default_color_surface"
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:src="@drawable/person"
+                                android:layout_margin="@dimen/_7sdp"
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"/>
+                            <EditText
+                                android:hint="@string/etHint"
+                                android:maxLines="1"
+                                android:background="@drawable/background_ads"
+                                android:layout_margin="@dimen/_7sdp"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:textColor="@color/colorBackgroundMessage"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_25sdp"/>
+                        </LinearLayout>
+                        <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:text="@string/directors"
-                            android:id="@+id/tvDirectors"
-                            android:textStyle="bold"
-                            android:textColor="@color/design_default_color_surface"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:text="@string/actor"
-                            android:id="@+id/tvActor"
-                            android:textStyle="bold"
-                            android:textColor="@color/design_default_color_surface"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:text="@string/nation"
-                            android:id="@+id/tvNation"
-                            android:textStyle="bold"
-                            android:textColor="@color/design_default_color_surface"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:text="@string/episodes"
-                            android:id="@+id/tvEpisodes"
-                            android:textStyle="bold"
-                            android:textColor="@color/design_default_color_surface"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <TextView
-                            android:text="@string/releaseYear"
-                            android:id="@+id/tvReleaseYear"
-                            android:textStyle="bold"
-                            android:textColor="@color/design_default_color_surface"
-                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:text="@string/comment"
+                                android:layout_margin="@dimen/_7sdp"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_14sdp"
+                                android:textColor="@color/colorWhite"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/tvTotalComments"
+                                android:layout_margin="@dimen/_7sdp"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_14sdp"
+                                android:textColor="@color/colorWhite"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvComment"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                    </LinearLayout>
-                    <TextView
-                        android:layout_marginLeft="@dimen/_7sdp"
-                        android:textStyle="bold"
-                        android:textColor="@color/design_default_color_surface"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_marginLeft="@dimen/_7sdp"
-                        android:text="@string/synopsis"
-                        android:id="@+id/tvSynopsis"
-                        android:textColor="@color/design_default_color_surface"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvRelatedVideos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>

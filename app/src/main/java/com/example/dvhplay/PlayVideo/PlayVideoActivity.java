@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,6 +26,8 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
+import com.example.dvhplay.PlayVideo.Comments.AdapterComment;
+import com.example.dvhplay.PlayVideo.Comments.ItemComment;
 import com.example.dvhplay.R;
 import com.example.dvhplay.ServiceAndBroadcast.ServiceNotification;
 import com.example.dvhplay.databinding.ActivityPlayVideoBinding;
@@ -34,6 +38,9 @@ import com.example.dvhplay.video.VideoUlti;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "PlayVideoActivity";
@@ -118,6 +125,8 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     Utilities utilities;
     VFMSharePreference sharePreference = new VFMSharePreference(this);
     private static final int MAINACTIVITY = 2000;
+    boolean follow = false;
+    boolean hideComment = true;
     Intent intent;
     Handler handler = new Handler();
     CheckNetwork checkNetwork = new CheckNetwork();
@@ -288,9 +297,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     fullscreen = false;
                 } else {
                         binding.vvPlayVideo.pause();
-//                        Intent intent = new Intent();
-//                        intent.setClass(getBaseContext(), ServiceNotification.class);
-//                        getBaseContext().stopService(intent);
+                        sharePreference.remove("title");
                         finish();
                     }
             }
@@ -371,6 +378,53 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             public void onClick(View v) {
                 binding.vvPlayVideo.seekTo(0);
                 binding.vvPlayVideo.start();
+            }
+        });
+        binding.llfollow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!follow) {
+                    binding.imFollow.setImageResource(R.drawable.ic_round_favorite_if_click_24);
+                    binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
+                    binding.tvFollow.setText(R.string.unfollow);
+                    follow = true;
+                } else {
+                    binding.imFollow.setImageResource(R.drawable.ic_round_favorite_24);
+                    binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
+                    binding.tvFollow.setText(R.string.follow);
+                    follow = false;
+                }
+            }
+        });
+        binding.llComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ItemComment c1,c2,c3;
+                c1 = new ItemComment("Hùng","Phim rất hay");
+                c2 = new ItemComment("Hùng","Phim không hay");
+                c3 = new ItemComment("Hùng","Ok");
+                List<ItemComment> commentList = new ArrayList<>();
+                commentList.add(c1);
+                commentList.add(c2);
+                commentList.add(c3);
+                AdapterComment adapterComment = new AdapterComment(commentList);
+                RecyclerView.LayoutManager layoutManagerComment = new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false);
+                binding.rvComment.setLayoutManager(layoutManagerComment);
+                binding.rvComment.setAdapter(adapterComment);
+                binding.tvTotalComments.setText("("+commentList.size()+")");
+                if(hideComment) {
+                    binding.imComment.setImageResource(R.drawable.ic_round_chat_if_click_24);
+                    binding.tvComment.setText(R.string.hidecomment);
+                    binding.tvComment.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
+                    binding.llCommentContent.setVisibility(View.VISIBLE);
+                    hideComment = false;
+                } else {
+                    binding.imComment.setImageResource(R.drawable.ic_round_chat_24);
+                    binding.tvComment.setText(R.string.comment);
+                    binding.tvComment.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
+                    binding.llCommentContent.setVisibility(View.GONE);
+                    hideComment = true;
+                }
             }
         });
     }
@@ -513,16 +567,16 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             isShow = false;
         }
     }
-    public void onLoading(){
-        if (!binding.vvPlayVideo.isPlaying() && binding.nbVideo.getProgress() <100 && isLoad )
-        {
-            binding.prBar.setVisibility(View.VISIBLE);
-            binding.imPauseOrResume.setVisibility(View.INVISIBLE);
-        }else {
-            binding.prBar.setVisibility(View.GONE);
-            binding.imPauseOrResume.setVisibility(View.VISIBLE);
-        }
-    }
+//    public void onLoading(){
+//        if (!binding.vvPlayVideo.isPlaying() && binding.nbVideo.getProgress() <100 && isLoad )
+//        {
+//            binding.prBar.setVisibility(View.VISIBLE);
+//            binding.imPauseOrResume.setVisibility(View.INVISIBLE);
+//        }else {
+//            binding.prBar.setVisibility(View.GONE);
+//            binding.imPauseOrResume.setVisibility(View.VISIBLE);
+//        }
+//    }
     private int getScreenBrightness(){
         int screenBrightness = MAX_LIGHTNESS;
         try {
