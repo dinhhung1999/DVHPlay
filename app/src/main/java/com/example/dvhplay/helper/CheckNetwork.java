@@ -18,32 +18,41 @@ import androidx.appcompat.app.AlertDialog;
 
 public class CheckNetwork {
     public boolean isNetworkConnected(Context context){
-        if (context == null) return false;
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
-            if (capabilities == null){
-                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
-                    return true;
-                }else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
-                    return true;
-                }else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)){
-                    return true;
-                }
-            }
+        ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if(networkInfo != null && networkInfo.isConnected())
+        {
+            return true;
         }
         else {
-            try {
-                NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-                if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
-                    return true;
-                }
-            } catch (Exception e) {
-                Log.i("update_statut", "" + e.getMessage());
-            }
+            return false;
         }
-        Log.i("update_statut","Network is available : FALSE ");
-        return false;
+//        if (context == null) return false;
+//        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+//            NetworkCapabilities capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.getActiveNetwork());
+//            if (capabilities == null){
+//                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)){
+//                    return true;
+//                }else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)){
+//                    return true;
+//                }else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)){
+//                    return true;
+//                }
+//            }
+//        }
+//        else {
+//            try {
+//                NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+//                if (activeNetworkInfo != null && activeNetworkInfo.isConnected()) {
+//                    return true;
+//                }
+//            } catch (Exception e) {
+//                Log.i("update_statut", "" + e.getMessage());
+//            }
+//        }
+//        Log.i("update_statut","Network is available : FALSE ");
+//        return false;
     }
     public boolean isInternetAvailable(Context context) {
         try {

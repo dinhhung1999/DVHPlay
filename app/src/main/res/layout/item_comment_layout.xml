@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:layout_margin="@dimen/_7sdp"
     android:gravity="center_vertical"
-    android:layout_height="@dimen/_60sdp">
+    android:layout_height="wrap_content">
     <ImageView
         android:src="@drawable/person"
         android:layout_margin="@dimen/_7sdp"

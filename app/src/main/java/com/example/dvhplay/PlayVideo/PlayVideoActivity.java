@@ -15,6 +15,7 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -163,7 +164,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getSupportActionBar().hide();
         binding = DataBindingUtil.setContentView(this, R.layout.activity_play_video);
-        //khởi chạy service
         startService(new Intent(getBaseContext(), ServiceNotification.class));
         setInvisibility();
         intent = getIntent();

@@ -26,7 +26,7 @@ public class ServiceNotification extends Service {
 
         PendingIntent pendingUngdung = PendingIntent.getBroadcast(getBaseContext(), 10, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        // set sau bao lâu thì check 1 lần ở đây anh để 5000 =5s
+//         set sau bao lâu thì check 1 lần ở đây anh để 5000 =5s
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 5000, pendingUngdung);
 
         return START_STICKY;
