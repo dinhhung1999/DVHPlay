@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
+import com.example.dvhplay.MainActivity;
 import com.example.dvhplay.PlayVideo.Comments.AdapterComment;
 import com.example.dvhplay.PlayVideo.Comments.ItemComment;
 import com.example.dvhplay.R;
@@ -298,7 +299,8 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 } else {
                         binding.vvPlayVideo.pause();
                         sharePreference.remove("title");
-                        finish();
+//                        finish();
+                    startActivity(new Intent(getBaseContext(), MainActivity.class));
                     }
             }
         });
@@ -440,7 +442,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         binding.nbVideo.setMax(100);
         initVolumeWithLight();
         utilities = new Utilities();
-
     }
     private void playVideo() {
         isLoad = false;

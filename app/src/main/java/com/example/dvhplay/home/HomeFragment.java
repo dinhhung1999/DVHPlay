@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
     APIUtils APIUtils = new APIUtils();
     AdapterVideo adapterVideo;
     iVideoService videoService;
-    List<VideoUlti> videoUtilList = new ArrayList<>();
+    List<VideoUlti> videoUtilList1, videoUltiList2, videoUltiList3;
     List<SliderItem> sliderItemList = new ArrayList<>();
     SliderImageAdapter sliderImageAdapter;
 
@@ -139,8 +139,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
                 if (response.isSuccessful()){
-                    videoUtilList = response.body();
-                    adapterVideo = new AdapterVideo(videoUtilList);
+                    videoUtilList1= new ArrayList<>();
+                    videoUtilList1 = response.body();
+                    adapterVideo = new AdapterVideo(videoUtilList1);
                     adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
                         @Override
                         public void setItemOnClickVideo(VideoUlti videoUlti) {
@@ -155,12 +156,84 @@ public class HomeFragment extends Fragment {
                     RecyclerView.LayoutManager layoutManagerHotVideo = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
                     binding.rvHotvideo.setLayoutManager(layoutManagerHotVideo);
                     binding.rvHotvideo.setAdapter(adapterVideo);
+                } else {
+                    int sc = response.code();
+                    switch (sc) {
+                        case 400:
+                            Log.e("Error 400", "Bad Request");
+                            break;
+                        case 404:
+                            Log.e("Error 404", "Not Found");
+                            break;
+                        default:
+                            Log.e("Error", "Generic Error");
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<VideoUlti>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+        Call<List<VideoUlti>> call2 = videoService.getVideo2();
+        call2.enqueue(new Callback<List<VideoUlti>>() {
+            @Override
+            public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
+                if (response.isSuccessful()){
+                    videoUltiList2 = new ArrayList<>();
+                   videoUltiList2 = response.body();
+                    adapterVideo = new AdapterVideo(videoUltiList2);
+                    adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
+                        @Override
+                        public void setItemOnClickVideo(VideoUlti videoUlti) {
+                            Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                            intent.putExtra("video", (Serializable) videoUlti);
+                            startActivity(intent);
+                        }
+                    });
                     binding.llProposed.setVisibility(View.VISIBLE);
                     RecyclerView.LayoutManager layoutManagerSynthetic = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
                     binding.rvSynthetic.setLayoutManager(layoutManagerSynthetic);
                     binding.rvSynthetic.setAdapter(adapterVideo);
+                } else {
+                    int sc = response.code();
+                    switch (sc) {
+                        case 400:
+                            Log.e("Error 400", "Bad Request");
+                            break;
+                        case 404:
+                            Log.e("Error 404", "Not Found");
+                            break;
+                        default:
+                            Log.e("Error", "Generic Error");
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<VideoUlti>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+        Call<List<VideoUlti>> call3 = videoService.getVideo3();
+        call3.enqueue(new Callback<List<VideoUlti>>() {
+            @Override
+            public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
+                if (response.isSuccessful()){
+                    videoUltiList3 = new ArrayList<>();
+                    videoUltiList3 = response.body();
+                    adapterVideo = new AdapterVideo(videoUltiList3);
+                    adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
+                        @Override
+                        public void setItemOnClickVideo(VideoUlti videoUlti) {
+                            Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                            intent.putExtra("video", (Serializable) videoUlti);
+                            startActivity(intent);
+                        }
+                    });
                     binding.llSynthetic.setVisibility(View.VISIBLE);
                     RecyclerView.LayoutManager layoutManagerrvProposed = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
                     binding.rvProposed.setLayoutManager(layoutManagerrvProposed);

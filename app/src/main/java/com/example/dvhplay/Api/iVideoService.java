@@ -28,6 +28,12 @@ public interface iVideoService   {
 
     @GET("getVideoHot")
     Call<List<VideoUlti>> getVideo();
-    @GET("getVideoHot")
+    @GET("GetItemCategoryOne")
     Call<List<SliderItem>> getSlider();
+    @GET("GetItemCategoryOne")
+    Call<List<VideoUlti>> getVideo2();
+    @GET("GetItemCategoryTwo")
+    Call<List<VideoUlti>> getVideo3();
+    @GET("GetCategory")
+    Call<List<VideoUlti>> getCategory();
 }
