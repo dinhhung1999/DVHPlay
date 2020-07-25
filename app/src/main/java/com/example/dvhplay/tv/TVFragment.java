@@ -2,40 +2,33 @@ package com.example.dvhplay.tv;
 
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import com.example.dvhplay.R;
-import com.example.dvhplay.home.HomeFragment;
+import com.example.dvhplay.databinding.FragmentTVBinding;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TVFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TVFragment extends Fragment {
-
-    public TVFragment() {
-        // Required empty public constructor
-    }
-
-
+    FragmentTVBinding binding;
     public static TVFragment newInstance() {
         return new TVFragment();
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_t_v, container, false);
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_t_v, container, false);
+        WebSettings webSettings = binding.wvTv.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        WebViewClientImpl webViewClient = new WebViewClientImpl(getActivity());
+        binding.wvTv.setWebViewClient(webViewClient);
+        binding.wvTv.loadUrl("https://fptplay.vn/xem-truyen-hinh");
+        return binding.getRoot();
     }
 }

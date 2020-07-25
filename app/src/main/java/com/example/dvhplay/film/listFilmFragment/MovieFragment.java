@@ -59,10 +59,11 @@ public class MovieFragment extends Fragment {
                     adapterVideo = new AdapterVideo(videoUtilList);
                     adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
                         @Override
-                        public void setItemOnClickVideo(VideoUlti videoUlti) {
+                        public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
                             intent.putExtra("video", (Serializable) videoUlti);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+                            intent.putExtra("videoUtilList", (Serializable) videoUtilList);
+                            intent.putExtra("position", position);
                             startActivity(intent);
                         }
                     });

@@ -2,7 +2,6 @@ package com.example.dvhplay.home;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -23,7 +22,6 @@ import com.example.dvhplay.Api.RetrofitClient;
 import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.home.sliderImage.SliderImageAdapter;
-import com.example.dvhplay.home.sliderImage.SliderItem;
 import com.example.dvhplay.home.sliderImage.iItemOnClickSlider;
 import com.example.dvhplay.video.AdapterVideo;
 import com.example.dvhplay.video.VideoUlti;
@@ -31,19 +29,12 @@ import com.example.dvhplay.video.iItemOnClickVideo;
 import com.example.dvhplay.Api.iVideoService;
 
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.example.dvhplay.databinding.FragmentHomeBinding;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
-import com.smarteist.autoimageslider.IndicatorView.draw.controller.DrawController;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
@@ -53,7 +44,7 @@ public class HomeFragment extends Fragment {
     AdapterVideo adapterVideo;
     iVideoService videoService;
     List<VideoUlti> videoUtilList1, videoUltiList2, videoUltiList3;
-    List<SliderItem> sliderItemList = new ArrayList<>();
+    List<VideoUlti> sliderItemList = new ArrayList<>();
     SliderImageAdapter sliderImageAdapter;
 
     private static final String TAG = "HomeFragment" ;
@@ -84,19 +75,20 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }public void getSliderImage() {
         videoService = RetrofitClient.getRetrofitClient(APIUtils.getBASE_API()).create(iVideoService.class);
-        Call<List<SliderItem>> call = videoService.getSlider();
-        call.enqueue(new Callback<List<SliderItem>>() {
+        Call<List<VideoUlti>> call = videoService.getSlider();
+        call.enqueue(new Callback<List<VideoUlti>>() {
             @Override
-            public void onResponse(Call<List<SliderItem>> call, Response<List<SliderItem>> response) {
+            public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
                 if (response.isSuccessful()) {
                     sliderItemList = response.body();
                     sliderImageAdapter = new SliderImageAdapter(sliderItemList);
                     sliderImageAdapter.setiItemOnClickSlider(new iItemOnClickSlider() {
                         @Override
-                        public void setItemOnClickSlider(SliderItem sliderItem) {
+                        public void setItemOnClickSlider(VideoUlti sliderItem,int position) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
-                            intent.setFlags(0);
                             intent.putExtra("slideItem", (Serializable) sliderItem);
+                            intent.putExtra("videoUtilList", (Serializable) sliderItemList);
+                            intent.putExtra("position", position);
                             startActivity(intent);
                         }
                     });
@@ -127,7 +119,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<SliderItem>> call, Throwable t) {
+            public void onFailure(Call<List<VideoUlti>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
             }
         });
@@ -144,10 +136,11 @@ public class HomeFragment extends Fragment {
                     adapterVideo = new AdapterVideo(videoUtilList1);
                     adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
                         @Override
-                        public void setItemOnClickVideo(VideoUlti videoUlti) {
+                        public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                             intent.putExtra("video", (Serializable) videoUlti);
+                            intent.putExtra("videoUtilList", (Serializable) videoUtilList1);
+                            intent.putExtra("position", position);
                             startActivity(intent);
                         }
                     });
@@ -186,10 +179,11 @@ public class HomeFragment extends Fragment {
                     adapterVideo = new AdapterVideo(videoUltiList2);
                     adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
                         @Override
-                        public void setItemOnClickVideo(VideoUlti videoUlti) {
+                        public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                             intent.putExtra("video", (Serializable) videoUlti);
+                            intent.putExtra("videoUtilList", (Serializable) videoUltiList2);
+                            intent.putExtra("position", position);
                             startActivity(intent);
                         }
                     });
@@ -227,10 +221,11 @@ public class HomeFragment extends Fragment {
                     adapterVideo = new AdapterVideo(videoUltiList3);
                     adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
                         @Override
-                        public void setItemOnClickVideo(VideoUlti videoUlti) {
+                        public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
                             intent.putExtra("video", (Serializable) videoUlti);
+                            intent.putExtra("videoUtilList", (Serializable) videoUltiList3);
+                            intent.putExtra("position", position);
                             startActivity(intent);
                         }
                     });

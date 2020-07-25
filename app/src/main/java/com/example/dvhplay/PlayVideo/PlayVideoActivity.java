@@ -4,10 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,11 +15,11 @@ import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -35,11 +35,9 @@ import com.example.dvhplay.ServiceAndBroadcast.ServiceNotification;
 import com.example.dvhplay.databinding.ActivityPlayVideoBinding;
 import com.example.dvhplay.helper.CheckNetwork;
 import com.example.dvhplay.helper.VFMSharePreference;
-import com.example.dvhplay.home.sliderImage.SliderItem;
+import com.example.dvhplay.video.AdapterVideo;
 import com.example.dvhplay.video.VideoUlti;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
+import com.example.dvhplay.video.iItemOnClickVideo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,18 +118,21 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     boolean isPlaying = true;
     // kiểm tra load
     private boolean isLoad = true;
-    VideoUlti videoUlti;
-    SliderItem sliderItem;
+    VideoUlti video;
     String url = "";
     String path = "";
     Utilities utilities;
-    VFMSharePreference sharePreference = new VFMSharePreference(this);
-    private static final int MAINACTIVITY = 2000;
     boolean follow = false;
     boolean hideComment = true;
     Intent intent;
+    int itemPosition = 0;
+    int selections = 0;
+    List<VideoUlti> listRelated;
     Handler handler = new Handler();
     CheckNetwork checkNetwork = new CheckNetwork();
+    AdapterVideo adapterVideo;
+    List<VideoUlti> videoUltiList;
+    VFMSharePreference sharePreference = new VFMSharePreference(this);
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
@@ -172,15 +173,10 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             case -1:
                 path = intent.getStringExtra("path");
                 break;
-            case 0:
-                sliderItem = (SliderItem) intent.getSerializableExtra("slideItem");
-                binding.tvTitleVideo.setText(sliderItem.getTitle());
-                url = sliderItem.getFile_mp4();
-                break;
             default:
-                videoUlti = (VideoUlti) intent.getSerializableExtra("video");
-                binding.tvTitleVideo.setText(videoUlti.getTitle());
-                url = videoUlti.getFile_mp4();
+                video = (VideoUlti) intent.getSerializableExtra("video");
+                binding.tvTitleVideo.setText(video.getTitle());
+                url = video.getFile_mp4();
                 break;
         }
         sharePreference.putStringValue("title", (String) binding.tvTitleVideo.getText());
@@ -429,8 +425,91 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 }
             }
         });
+        videoUltiList = (List<VideoUlti>) intent.getSerializableExtra("videoUtilList");
+        itemPosition = intent.getIntExtra("position",0);
+        listRelated = new ArrayList<>();
+        listRelated = videoUltiList.subList(0, videoUltiList.size());
+        listRelated.remove(itemPosition);
+        listRelated.add(0,video);
+        adapterVideo = new AdapterVideo(listRelated);
+        adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
+            @Override
+            public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
+//                Log.d("po",""+ itemPosition);
+                if (selections >= videoUltiList.size()) selections =0;
+                else selections +=1;
+                if (video != videoUlti) {
+                    video = videoUlti;
+                    itemPosition = position - selections;
+                }
+                listRelated.remove(position);
+                listRelated.add(0,videoUlti);
+                adapterVideo.notifyDataSetChanged();
+                binding.vvPlayVideo.stopPlayback();
+                binding.vvPlayVideo.setVideoURI(Uri.parse(videoUlti.getFile_mp4()));
+                binding.tvTitleVideo.setText(videoUlti.getTitle());
+                isLoad = false;
+                binding.prBar.setVisibility(View.VISIBLE);
+                binding.vvPlayVideo.start();
+                binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        binding.prBar.setVisibility(View.GONE);
+                        isLoad = true;
+                    }
+                });
+            }
+        });
+        RecyclerView.LayoutManager GridlayoutManager = new GridLayoutManager(getBaseContext(), 2, RecyclerView.VERTICAL, false);
+        binding.rvRelatedVideos.setLayoutManager(GridlayoutManager);
+        binding.rvRelatedVideos.setAdapter(adapterVideo);
+        binding.imSkipNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemPosition += 1;
+                video = videoUltiList.get(itemPosition);
+                listRelated.remove(itemPosition);
+                listRelated.add(0,video);
+                adapterVideo.notifyDataSetChanged();
+                binding.vvPlayVideo.stopPlayback();
+                binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
+                binding.tvTitleVideo.setText(video.getTitle());
+                isLoad = false;
+                binding.prBar.setVisibility(View.VISIBLE);
+                binding.vvPlayVideo.start();
+                binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        binding.prBar.setVisibility(View.GONE);
+                        isLoad = true;
+                    }
+                });
+            }
+        });
+        binding.imSkipPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemPosition -=1;
+                video = videoUltiList.get(itemPosition);
+                listRelated.remove(itemPosition);
+                listRelated.add(0,video);
+                adapterVideo.notifyDataSetChanged();
+                binding.vvPlayVideo.stopPlayback();
+                binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
+                binding.tvTitleVideo.setText(video.getTitle());
+                isLoad = false;
+                binding.prBar.setVisibility(View.VISIBLE);
+                binding.vvPlayVideo.start();
+                binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mp) {
+                        binding.prBar.setVisibility(View.GONE);
+                        isLoad = true;
+                    }
+                });
+            }
+        });
     }
-
     private void initOnjects() {
         binding.nbVideo.setOnSeekBarChangeListener(this);
         if (intent.getFlags()==-1){
@@ -476,6 +555,20 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_24);
                 binding.imPauseOrResume.setVisibility(View.VISIBLE);
                 binding.imRepPlay.setVisibility(View.GONE);
+            }
+            if (itemPosition == 0) {
+                binding.imSkipPrevious.setImageResource(R.drawable.ic_round_skip_previous_hide_24);
+                binding.imSkipPrevious.setEnabled(false);
+            } else {
+                binding.imSkipPrevious.setImageResource(R.drawable.ic_round_skip_previous_24);
+                binding.imSkipPrevious.setEnabled(true);
+            }
+            if (itemPosition == videoUltiList.size() -1) {
+                binding.imSkipNext.setImageResource(R.drawable.ic_round_skip_next_hide_24);
+                binding.imSkipNext.setEnabled(false);
+            } else {
+                binding.imSkipNext.setImageResource(R.drawable.ic_round_skip_next_24);
+                binding.imSkipNext.setEnabled(true);
             }
             handler.postDelayed(this, 0);
         }

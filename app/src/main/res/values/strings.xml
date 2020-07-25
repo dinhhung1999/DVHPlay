@@ -28,6 +28,7 @@
     <string name="unfollow">Unfollow</string>
     <string name="comment">Comments</string>
     <string name="hidecomment">Hide comments</string>
+    <string name="relatedContent">Related Content</string>
     // comment film
     <string name="etHint">Comment</string>
 

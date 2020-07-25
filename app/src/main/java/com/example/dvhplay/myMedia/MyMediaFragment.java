@@ -18,6 +18,7 @@ import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.FragmentMyMediaBinding;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,6 +55,8 @@ public class MyMediaFragment extends Fragment {
                 Intent intent = new Intent(getActivity().getBaseContext(),PlayVideoActivity.class);
                 intent.setFlags(-1);
                 intent.putExtra("path",videoInDevice.getPath());
+                intent.putExtra("videoUtilList", (Serializable) videoInDeviceList);
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
@@ -61,7 +64,7 @@ public class MyMediaFragment extends Fragment {
     }
 
     public List<VideoInDevice> getAllMedia() {
-        HashSet<String> videoItemHashSet = new HashSet<>();
+//        HashSet<String> videoItemHashSet = new HashSet<>();
         String[] projection = {MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.DISPLAY_NAME};
         Cursor cursor = getContext().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
         try {
@@ -75,7 +78,7 @@ public class MyMediaFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ArrayList<String> downloadedList = new ArrayList<>(videoItemHashSet);
+//        ArrayList<String> downloadedList = new ArrayList<>(videoItemHashSet);
         return videoInDeviceList;
     }
 }

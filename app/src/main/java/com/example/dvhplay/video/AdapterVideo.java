@@ -35,14 +35,14 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.ViewHoder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterVideo.ViewHoder holder, int position) {
+    public void onBindViewHolder(@NonNull final AdapterVideo.ViewHoder holder, int position) {
         final VideoUlti videoUlti = videoUltiList.get(position);
         holder.tvTitle.setText(videoUlti.getTitle());
         Glide.with(holder.imAvatar).load(videoUlti.getAvatar()).into(holder.imAvatar);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iItemOnClickVideo.setItemOnClickVideo(videoUlti);
+                iItemOnClickVideo.setItemOnClickVideo(videoUlti, holder.getLayoutPosition());
             }
         });
     }
