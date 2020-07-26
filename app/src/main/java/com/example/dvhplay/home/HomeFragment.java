@@ -86,7 +86,7 @@ public class HomeFragment extends Fragment {
                         @Override
                         public void setItemOnClickSlider(VideoUlti sliderItem,int position) {
                             Intent intent = new Intent(getActivity().getBaseContext(), PlayVideoActivity.class);
-                            intent.putExtra("slideItem", (Serializable) sliderItem);
+                            intent.putExtra("video", (Serializable) sliderItem);
                             intent.putExtra("videoUtilList", (Serializable) sliderItemList);
                             intent.putExtra("position", position);
                             startActivity(intent);

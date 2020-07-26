@@ -26,6 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.example.dvhplay.MainActivity;
 import com.example.dvhplay.PlayVideo.Comments.AdapterComment;
@@ -35,7 +36,7 @@ import com.example.dvhplay.ServiceAndBroadcast.ServiceNotification;
 import com.example.dvhplay.databinding.ActivityPlayVideoBinding;
 import com.example.dvhplay.helper.CheckNetwork;
 import com.example.dvhplay.helper.VFMSharePreference;
-import com.example.dvhplay.video.AdapterVideo;
+import com.example.dvhplay.video.AdapterRelatedVideo;
 import com.example.dvhplay.video.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
 
@@ -130,7 +131,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     List<VideoUlti> listRelated;
     Handler handler = new Handler();
     CheckNetwork checkNetwork = new CheckNetwork();
-    AdapterVideo adapterVideo;
+    AdapterRelatedVideo adapterVideo;
     List<VideoUlti> videoUltiList;
     VFMSharePreference sharePreference = new VFMSharePreference(this);
     private Handler mHandler = new Handler(new Handler.Callback() {
@@ -431,11 +432,13 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         listRelated = videoUltiList.subList(0, videoUltiList.size());
         listRelated.remove(itemPosition);
         listRelated.add(0,video);
-        adapterVideo = new AdapterVideo(listRelated);
+        adapterVideo = new AdapterRelatedVideo(listRelated);
         adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
             @Override
             public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
-//                Log.d("po",""+ itemPosition);
+                binding.vvPlayVideo.stopPlayback();
+                binding.vvPlayVideo.seekTo(0);
+                binding.nbVideo.setProgress(0);
                 if (selections >= videoUltiList.size()) selections =0;
                 else selections +=1;
                 if (video != videoUlti) {
@@ -445,7 +448,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 listRelated.remove(position);
                 listRelated.add(0,videoUlti);
                 adapterVideo.notifyDataSetChanged();
-                binding.vvPlayVideo.stopPlayback();
                 binding.vvPlayVideo.setVideoURI(Uri.parse(videoUlti.getFile_mp4()));
                 binding.tvTitleVideo.setText(videoUlti.getTitle());
                 isLoad = false;
@@ -460,18 +462,19 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 });
             }
         });
-        RecyclerView.LayoutManager GridlayoutManager = new GridLayoutManager(getBaseContext(), 2, RecyclerView.VERTICAL, false);
+        RecyclerView.LayoutManager GridlayoutManager = new GridLayoutManager(getBaseContext(), 1, RecyclerView.VERTICAL, false);
         binding.rvRelatedVideos.setLayoutManager(GridlayoutManager);
         binding.rvRelatedVideos.setAdapter(adapterVideo);
         binding.imSkipNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.vvPlayVideo.stopPlayback();
+                binding.vvPlayVideo.seekTo(0);
                 itemPosition += 1;
                 video = videoUltiList.get(itemPosition);
                 listRelated.remove(itemPosition);
                 listRelated.add(0,video);
                 adapterVideo.notifyDataSetChanged();
-                binding.vvPlayVideo.stopPlayback();
                 binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
                 binding.tvTitleVideo.setText(video.getTitle());
                 isLoad = false;
@@ -489,12 +492,13 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         binding.imSkipPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.vvPlayVideo.stopPlayback();
+                binding.vvPlayVideo.seekTo(0);
                 itemPosition -=1;
                 video = videoUltiList.get(itemPosition);
                 listRelated.remove(itemPosition);
                 listRelated.add(0,video);
                 adapterVideo.notifyDataSetChanged();
-                binding.vvPlayVideo.stopPlayback();
                 binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
                 binding.tvTitleVideo.setText(video.getTitle());
                 isLoad = false;
@@ -547,14 +551,14 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             binding.nbVideo.setMax(binding.vvPlayVideo.getDuration());
             binding.tvCurrentTime.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getCurrentPosition()));
             binding.tvTotalTime.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getDuration()));
-            if (binding.nbVideo.getProgress()!=binding.nbVideo.getMax()) {
-                binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_24);
-                binding.imPauseOrResume.setVisibility(View.VISIBLE);
-                binding.imRepPlay.setVisibility(View.GONE);
-            } else {
+            if (binding.tvCurrentTime.getText().equals(binding.tvTotalTime.getText()) && !binding.tvCurrentTime.getText().equals("0:00")) {
                 binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_hide_24);
                 binding.imPauseOrResume.setVisibility(View.GONE);
                 binding.imRepPlay.setVisibility(View.VISIBLE);
+            } else {
+                binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_24);
+                binding.imPauseOrResume.setVisibility(View.VISIBLE);
+                binding.imRepPlay.setVisibility(View.GONE);
             }
             if (itemPosition == 0) {
                 binding.imSkipPrevious.setImageResource(R.drawable.ic_round_skip_previous_hide_24);
