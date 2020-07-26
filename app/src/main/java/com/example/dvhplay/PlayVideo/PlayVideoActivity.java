@@ -547,14 +547,14 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             binding.nbVideo.setMax(binding.vvPlayVideo.getDuration());
             binding.tvCurrentTime.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getCurrentPosition()));
             binding.tvTotalTime.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getDuration()));
-            if (binding.nbVideo.getProgress()==binding.nbVideo.getMax()) {
-                binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_hide_24);
-                binding.imPauseOrResume.setVisibility(View.GONE);
-                binding.imRepPlay.setVisibility(View.VISIBLE);
-            } else {
+            if (binding.nbVideo.getProgress()!=binding.nbVideo.getMax()) {
                 binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_24);
                 binding.imPauseOrResume.setVisibility(View.VISIBLE);
                 binding.imRepPlay.setVisibility(View.GONE);
+            } else {
+                binding.imForward10s.setImageResource(R.drawable.ic_round_forward_10_hide_24);
+                binding.imPauseOrResume.setVisibility(View.GONE);
+                binding.imRepPlay.setVisibility(View.VISIBLE);
             }
             if (itemPosition == 0) {
                 binding.imSkipPrevious.setImageResource(R.drawable.ic_round_skip_previous_hide_24);
