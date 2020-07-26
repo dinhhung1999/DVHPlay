@@ -443,7 +443,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 else selections +=1;
                 if (video != videoUlti) {
                     video = videoUlti;
-                    itemPosition = position - selections;
+                    itemPosition = position;
                 }
                 listRelated.remove(position);
                 listRelated.add(0,videoUlti);

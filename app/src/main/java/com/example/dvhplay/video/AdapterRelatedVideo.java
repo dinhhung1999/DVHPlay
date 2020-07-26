@@ -47,6 +47,7 @@ public class AdapterRelatedVideo extends RecyclerView.Adapter<AdapterRelatedVide
     public void onBindViewHolder(@NonNull final AdapterRelatedVideo.ViewHoder holder, int position) {
         final VideoUlti videoUlti = videoUltiList.get(position);
         holder.tvTitle.setText(videoUlti.getTitle());
+        holder.tvTimeDate.setText(videoUlti.getDate_published());
         Glide.with(holder.imAvatar).load(videoUlti.getAvatar()).into(holder.imAvatar);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,14 +72,15 @@ public class AdapterRelatedVideo extends RecyclerView.Adapter<AdapterRelatedVide
 
     public class ViewHoder extends RecyclerView.ViewHolder {
         ImageView imAvatar;
-        TextView tvTitle;
-        RelativeLayout rlVideo;
+        TextView tvTitle,tvTimeDate;
+        RelativeLayout rlProcess,rlVideo;
         AVLoadingIndicatorView avi;
         ShimmerTextView tv;
         public ViewHoder(@NonNull View itemView) {
             super(itemView);
             imAvatar = itemView.findViewById(R.id.imAvatar);
             tvTitle = itemView.findViewById(R.id.tvTitle);
+            tvTimeDate = itemView.findViewById(R.id.tvTimeDate);
             rlVideo = itemView.findViewById(R.id.rlVideo);
             avi = itemView.findViewById(R.id.avi);
             tv = itemView.findViewById(R.id.tvShimmer);
