@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="line">
-    <stroke android:width="@dimen/_2sdp"
-        android:dashGap="@dimen/_2sdp"
+    <stroke android:width="@dimen/_1sdp"
         android:color="@color/colorWhite"/>
 </shape>

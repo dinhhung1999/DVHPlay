@@ -64,7 +64,6 @@ public class MyMediaFragment extends Fragment {
     }
 
     public List<VideoInDevice> getAllMedia() {
-//        HashSet<String> videoItemHashSet = new HashSet<>();
         String[] projection = {MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.DISPLAY_NAME};
         Cursor cursor = getContext().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
         try {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,8 +16,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <ProgressBar
-                    android:layout_centerInParent="true"
                     android:id="@+id/prBar"
+                    android:layout_centerInParent="true"
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"/>
                 <LinearLayout
@@ -40,15 +41,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
-                <TextView
-                    android:id="@+id/tvChangeTime"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    android:textColor="@color/design_default_color_surface"
-                    android:background="@color/colorBackgroundMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
                 <ImageView
                     android:id="@+id/imLock"
                     android:visibility="gone"
@@ -64,10 +56,11 @@
                     android:id="@+id/llController"
                     android:visibility="invisible"
                     android:orientation="horizontal"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <ImageView
                         android:id="@+id/imReplay10s"
+                        android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginRight="@dimen/_8sdp"
                         android:src="@drawable/ic_round_replay_10_24"
                         android:layout_width="@dimen/_25sdp"
@@ -183,6 +176,74 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/llBottomVideo"
+                android:background="@color/colorBackground"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvTitleVideo"
+                    android:layout_marginLeft="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBackgroundMain"
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:gravity="right"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/llFollow"
+                        android:orientation="vertical"
+                        android:layout_margin="@dimen/_7sdp"
+                        android:gravity="center"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="wrap_content">
+                        <com.sackcentury.shinebuttonlib.ShineButton
+                            android:id="@+id/btnFollow"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            app:btn_color="@color/colorBackgroundDefaul"
+                            app:btn_fill_color="@color/colorBackgroundMain"
+                            app:allow_random_color="true"
+                            app:siShape="@raw/heart"/>
+                        <TextView
+                            android:id="@+id/tvFollow"
+                            android:gravity="center"
+                            android:textSize="@dimen/_8sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorBackgroundDefaul"
+                            android:text="@string/follow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llComment"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_margin="@dimen/_7sdp"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/imComment"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:src="@drawable/ic_round_chat_24"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"/>
+                        <TextView
+                            android:id="@+id/tvComment"
+                            android:text="@string/comment"
+                            android:textSize="@dimen/_8sdp"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorBackgroundDefaul"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
             <androidx.core.widget.NestedScrollView
                 android:background="@color/colorBackground"
                 android:id="@+id/svBottom"
@@ -193,71 +254,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/tvTitleVideo"
-                            android:layout_marginLeft="@dimen/_7sdp"
-                            android:layout_marginTop="@dimen/_7sdp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorBackgroundMain"
-                            android:layout_width="@dimen/_150sdp"
-                            android:layout_height="wrap_content"/>
-                       <LinearLayout
-                           android:gravity="right"
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content">
-                           <LinearLayout
-                               android:id="@+id/llfollow"
-                               android:orientation="vertical"
-                               android:layout_margin="@dimen/_7sdp"
-                               android:gravity="center"
-                               android:layout_width="@dimen/_50sdp"
-                               android:layout_height="wrap_content">
-                               <ImageView
-                                   android:id="@+id/imFollow"
-                                   android:layout_marginBottom="@dimen/_5sdp"
-                                   android:src="@drawable/ic_round_favorite_24"
-                                   android:layout_width="@dimen/_15sdp"
-                                   android:layout_height="@dimen/_15sdp"/>
-                               <TextView
-                                   android:id="@+id/tvFollow"
-                                   android:gravity="center"
-                                   android:textSize="@dimen/_8sdp"
-                                   android:textStyle="bold"
-                                   android:textColor="@color/colorBackgroundDefaul"
-                                   android:text="@string/follow"
-                                   android:layout_width="wrap_content"
-                                   android:layout_height="wrap_content"/>
-                           </LinearLayout>
-                           <LinearLayout
-                               android:id="@+id/llComment"
-                               android:orientation="vertical"
-                               android:gravity="center"
-                               android:layout_margin="@dimen/_7sdp"
-                               android:layout_width="@dimen/_70sdp"
-                               android:layout_height="wrap_content">
-                               <ImageView
-                                   android:id="@+id/imComment"
-                                   android:layout_marginBottom="@dimen/_5sdp"
-                                   android:src="@drawable/ic_round_chat_24"
-                                   android:layout_width="@dimen/_15sdp"
-                                   android:layout_height="@dimen/_15sdp"/>
-                               <TextView
-                                   android:id="@+id/tvComment"
-                                   android:text="@string/comment"
-                                   android:textSize="@dimen/_8sdp"
-                                   android:textStyle="bold"
-                                   android:textColor="@color/colorBackgroundDefaul"
-                                   android:layout_width="wrap_content"
-                                   android:layout_height="wrap_content"/>
-                           </LinearLayout>
-                       </LinearLayout>
-                    </LinearLayout>
-                    <LinearLayout
                         android:id="@+id/llCommentContent"
                         android:visibility="gone"
+                        android:isScrollContainer="true"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -303,6 +302,7 @@
                         </LinearLayout>
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvComment"
+                            android:nestedScrollingEnabled="false"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>

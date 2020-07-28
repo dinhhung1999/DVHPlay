@@ -118,7 +118,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     int changeVolume;
     boolean isPlaying = true;
     // kiểm tra load
-    private boolean isLoad = true;
     VideoUlti video;
     String url = "";
     String path = "";
@@ -127,8 +126,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     boolean hideComment = true;
     Intent intent;
     int itemPosition = 0;
-    int selections = 0;
-    List<VideoUlti> listRelated;
     Handler handler = new Handler();
     CheckNetwork checkNetwork = new CheckNetwork();
     AdapterRelatedVideo adapterVideo;
@@ -153,7 +150,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     break;
                 case SHOW_CENTER_CONTROL:
                     binding.llMessage.setVisibility(View.GONE);
-                    binding.tvChangeTime.setVisibility(View.GONE);
                     break;
                 default:
                     break;
@@ -199,7 +195,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                         case MotionEvent.ACTION_UP:
                             eventTime = event.getEventTime();
                             long durationHold = eventTime - downTime;
-                                if (durationHold < CLICK_ACTION_THRESHOLD && isLoad ){
+                                if (durationHold < CLICK_ACTION_THRESHOLD){
                                 onShowing();
                                 break;
                             } else {
@@ -216,8 +212,8 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                             return true;
                         case MotionEvent.ACTION_UP:
                             eventTime = event.getEventTime();
-                            long duration = eventTime - downTime;
-                            if (duration < CLICK_ACTION_THRESHOLD) {
+                            long durationHold = eventTime - downTime;
+                            if (durationHold < CLICK_ACTION_THRESHOLD) {
                                 onShowing();
                                 break;
                             }else {
@@ -272,7 +268,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     binding.imPauseOrResume.setImageResource(R.drawable.ic_round_play_arrow_24);
                     onPause();
                     isPlaying = false;
-                    isLoad = false;
                 } else {
                     binding.imPauseOrResume.setImageResource(R.drawable.ic_baseline_pause_24);
                     onResume();
@@ -285,6 +280,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             public void onClick(View v) {
                 if (fullscreen) {
                     binding.svBottom.setVisibility(View.VISIBLE);
+                    binding.llBottomVideo.setVisibility(View.VISIBLE);
                     binding.imFullScreen.setImageResource(R.drawable.ic_round_fullscreen_24);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -332,6 +328,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             public void onClick(View v) {
                 if (fullscreen) {
                     binding.svBottom.setVisibility(View.VISIBLE);
+                    binding.llBottomVideo.setVisibility(View.VISIBLE);
                     binding.imFullScreen.setImageResource(R.drawable.ic_round_fullscreen_24);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -342,6 +339,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     fullscreen = false;
                 } else {
                     binding.svBottom.setVisibility(View.GONE);
+                    binding.llBottomVideo.setVisibility(View.GONE);
                     binding.imFullScreen.setImageResource(R.drawable.ic_round_fullscreen_exit_24);
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -379,17 +377,20 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 binding.vvPlayVideo.start();
             }
         });
-        binding.llfollow.setOnClickListener(new View.OnClickListener() {
+        binding.btnFollow.setClickable(false);
+        binding.llFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!follow) {
-                    binding.imFollow.setImageResource(R.drawable.ic_round_favorite_if_click_24);
+//                    binding.imFollow.setImageResource(R.drawable.ic_round_favorite_if_click_24);
                     binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
                     binding.tvFollow.setText(R.string.unfollow);
+                    binding.btnFollow.setChecked(true,true);
                     follow = true;
                 } else {
-                    binding.imFollow.setImageResource(R.drawable.ic_round_favorite_24);
+//                    binding.imFollow.setImageResource(R.drawable.ic_round_favorite_24);
                     binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
+                    binding.btnFollow.setChecked(false,true);
                     binding.tvFollow.setText(R.string.follow);
                     follow = false;
                 }
@@ -428,36 +429,29 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         });
         videoUltiList = (List<VideoUlti>) intent.getSerializableExtra("videoUtilList");
         itemPosition = intent.getIntExtra("position",0);
-        listRelated = new ArrayList<>();
-        listRelated = videoUltiList.subList(0, videoUltiList.size());
-        listRelated.remove(itemPosition);
-        listRelated.add(0,video);
-        adapterVideo = new AdapterRelatedVideo(listRelated);
+        videoUltiList.remove(itemPosition);
+        videoUltiList.add(0,video);
+        adapterVideo = new AdapterRelatedVideo(videoUltiList);
         adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
             @Override
             public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
+                binding.imPauseOrResume.setImageResource(R.drawable.ic_round_pause_24);
                 binding.vvPlayVideo.stopPlayback();
                 binding.vvPlayVideo.seekTo(0);
                 binding.nbVideo.setProgress(0);
-                if (selections >= videoUltiList.size()) selections =0;
-                else selections +=1;
-                if (video != videoUlti) {
-                    video = videoUlti;
-                    itemPosition = position;
-                }
-                listRelated.remove(position);
-                listRelated.add(0,videoUlti);
+                itemPosition = position;
+                Log.e("er",""+itemPosition);
+                videoUltiList.remove(position);
+                videoUltiList.add(0,videoUlti);
                 adapterVideo.notifyDataSetChanged();
                 binding.vvPlayVideo.setVideoURI(Uri.parse(videoUlti.getFile_mp4()));
                 binding.tvTitleVideo.setText(videoUlti.getTitle());
-                isLoad = false;
                 binding.prBar.setVisibility(View.VISIBLE);
                 binding.vvPlayVideo.start();
                 binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         binding.prBar.setVisibility(View.GONE);
-                        isLoad = true;
                     }
                 });
             }
@@ -468,23 +462,22 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         binding.imSkipNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.imPauseOrResume.setImageResource(R.drawable.ic_round_pause_24);
                 binding.vvPlayVideo.stopPlayback();
                 binding.vvPlayVideo.seekTo(0);
                 itemPosition += 1;
                 video = videoUltiList.get(itemPosition);
-                listRelated.remove(itemPosition);
-                listRelated.add(0,video);
+                videoUltiList.remove(video);
+                videoUltiList.add(0,video);
                 adapterVideo.notifyDataSetChanged();
                 binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
                 binding.tvTitleVideo.setText(video.getTitle());
-                isLoad = false;
                 binding.prBar.setVisibility(View.VISIBLE);
                 binding.vvPlayVideo.start();
                 binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         binding.prBar.setVisibility(View.GONE);
-                        isLoad = true;
                     }
                 });
             }
@@ -492,23 +485,22 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         binding.imSkipPrevious.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                binding.imPauseOrResume.setImageResource(R.drawable.ic_round_pause_24);
                 binding.vvPlayVideo.stopPlayback();
                 binding.vvPlayVideo.seekTo(0);
                 itemPosition -=1;
                 video = videoUltiList.get(itemPosition);
-                listRelated.remove(itemPosition);
-                listRelated.add(0,video);
+                videoUltiList.remove(video);
+                videoUltiList.add(0,video);
                 adapterVideo.notifyDataSetChanged();
                 binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
                 binding.tvTitleVideo.setText(video.getTitle());
-                isLoad = false;
                 binding.prBar.setVisibility(View.VISIBLE);
                 binding.vvPlayVideo.start();
                 binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                     @Override
                     public void onPrepared(MediaPlayer mp) {
                         binding.prBar.setVisibility(View.GONE);
-                        isLoad = true;
                     }
                 });
             }
@@ -527,14 +519,12 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         utilities = new Utilities();
     }
     private void playVideo() {
-        isLoad = false;
         binding.prBar.setVisibility(View.VISIBLE);
         binding.vvPlayVideo.start();
         binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 binding.prBar.setVisibility(View.GONE);
-                isLoad = true;
             }
         });
         updateProgreeBar();
@@ -594,9 +584,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         handler.removeCallbacks(updateTimeTask);
-//        // forward or backward to certain seconds
         binding.vvPlayVideo.seekTo(binding.nbVideo.getProgress());
-        // update timer progress again
         updateProgreeBar();
         if (isPlaying) {
             binding.vvPlayVideo.start();
@@ -655,7 +643,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     };
     public void onShowing() {
         if (binding.llController.getVisibility() == View.INVISIBLE) {
-                binding.tvChangeTime.setVisibility(View.GONE);
                 binding.llMessage.setVisibility(View.GONE);
                 setVisibility();
                 handler.postDelayed(makeHidden, 8000);
@@ -715,7 +702,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         binding.tvMessage.setText(String.format("%s%%", currentVolume));
         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, changeVolume, 0);
         mHandler.removeMessages(SHOW_CENTER_CONTROL);
-        binding.tvChangeTime.setVisibility(View.GONE);
         binding.llMessage.setVisibility(View.VISIBLE);
         mHandler.sendEmptyMessageDelayed(SHOW_CENTER_CONTROL, SHOW_CONTROL_TIME);
     }
@@ -730,19 +716,17 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         binding.imMessage.setImageResource(R.drawable.ic_round_wb_sunny_24);
         binding.tvMessage.setText(String.format("%s%%",mShowLightness*100/255));
         WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.screenBrightness = mShowLightness/255f;
+        lp.screenBrightness = 5;
         getWindow().setAttributes(lp);
         mHandler.removeMessages(SHOW_CENTER_CONTROL);
-        binding.tvChangeTime.setVisibility(View.GONE);
         binding.llMessage.setVisibility(View.VISIBLE);
         mHandler.sendEmptyMessageDelayed(SHOW_CENTER_CONTROL,SHOW_CONTROL_TIME);
     }
     private void setFlashText(){
-        binding.tvChangeTime.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getCurrentPosition())+" / "+utilities.milliSecondToTimer(binding.vvPlayVideo.getDuration()));
+        binding.tvMessage.setText(utilities.milliSecondToTimer(binding.vvPlayVideo.getCurrentPosition())+" / "+utilities.milliSecondToTimer(binding.vvPlayVideo.getDuration()));
         setInvisibility();
         mHandler.removeMessages(SHOW_CENTER_CONTROL);
-        binding.llMessage.setVisibility(View.GONE);
-        binding.tvChangeTime.setVisibility(View.VISIBLE);
+        binding.llMessage.setVisibility(View.VISIBLE);
         mHandler.sendEmptyMessageDelayed(SHOW_CENTER_CONTROL,SHOW_CONTROL_TIME);
     }
     private void onSeekChange(int x1, int x2) {
@@ -754,6 +738,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 binding.vvPlayVideo.seekTo(currentPosition);
             } else {
                 int distance = (x1 - x2);
+                binding.imMessage.setImageResource(R.drawable.ic_round_fast_rewind_24);
                 binding.vvPlayVideo.seekTo(currentPosition - distance * 10);
                 setFlashText();
             }
@@ -763,6 +748,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     binding.vvPlayVideo.seekTo(currentPosition);
                     setFlashText();
                 } else {
+                    binding.imMessage.setImageResource(R.drawable.ic_round_fast_forward_24);
                     int distance = (x2 - x1);
                     binding.vvPlayVideo.seekTo(currentPosition + distance * 10);
                     setFlashText();
@@ -791,6 +777,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             alertDialog.show();
         }
     }
+
 
     @Override
     protected void onStop() {

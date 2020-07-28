@@ -23,6 +23,11 @@ android {
         enabled true
     }
 }
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -64,4 +69,5 @@ dependencies {
     // text Shimmer
     implementation 'com.romainpiel.shimmer:library:1.4.0@aar'
 
+    implementation 'com.sackcentury:shinebutton:1.0.0'
 }
