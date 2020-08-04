@@ -46,4 +46,6 @@
     // Search view
     <string name="seachhint">Search Video</string>
     <string name="noMatchFound">No Match found</string>
+    <string name="searchHistory">Search history</string>
+    <string name="searchResults">Search Results</string>
 </resources>

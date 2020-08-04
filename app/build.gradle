@@ -70,4 +70,5 @@ dependencies {
     implementation 'com.romainpiel.shimmer:library:1.4.0@aar'
 
     implementation 'com.sackcentury:shinebutton:1.0.0'
+    implementation 'com.github.skydoves:androidveil:1.0.8'
 }

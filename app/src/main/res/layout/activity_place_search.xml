@@ -4,24 +4,48 @@
     android:id="@+id/rlSearch"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-<!--        <AutoCompleteTextView-->
-<!--            android:id="@+id/autoCompleteTextView"-->
-<!--            android:layout_marginTop="@dimen/_10sdp"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent">-->
-<!--            <requestFocus></requestFocus>-->
-<!--        </AutoCompleteTextView>-->
-    <ListView
-        android:id="@+id/listHistory"
+    <LinearLayout
+        android:id="@+id/llHistory"
+        android:orientation="vertical"
         android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSearchVideo"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvListHistory"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:layout_margin="@dimen/_7sdp"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/searchHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ListView
+            android:id="@+id/listHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llResults"
+        android:orientation="vertical"
         android:visibility="gone"
+        android:background="@color/colorBackground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tvListReuslts"
+            android:textSize="@dimen/_13sdp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/_7sdp"
+            android:textColor="@color/colorWhite"
+            android:text="@string/searchResults"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchVideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
 </RelativeLayout>
 </layout>

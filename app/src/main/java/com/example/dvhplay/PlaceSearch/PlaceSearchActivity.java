@@ -7,33 +7,27 @@ import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SortedList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ResultReceiver;
 
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.example.dvhplay.Api.APIUtils;
 import com.example.dvhplay.Api.RetrofitClient;
 import com.example.dvhplay.Api.iVideoService;
+import com.example.dvhplay.Models.SearchHistory;
 import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.ActivityPlaceSearchBinding;
@@ -45,10 +39,8 @@ import com.example.dvhplay.video.iItemOnClickVideo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-import static com.example.dvhplay.R.xml.searchable;
 
 public class PlaceSearchActivity extends AppCompatActivity {
     ActivityPlaceSearchBinding binding;
@@ -56,6 +48,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
     SQLHelper sqlHelper;
     public ArrayAdapter adapter;
     ArrayList listHistorySearch = new ArrayList();
+    ArrayList lastHistorySearch ;
     com.example.dvhplay.Api.APIUtils APIUtils = new APIUtils();
     AdapterVideo adapterVideo;
     iVideoService videoService;
@@ -74,15 +67,9 @@ public class PlaceSearchActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setCustomView(R.layout.search_view_layout);
         searchView = actionBar.getCustomView().findViewById(R.id.svSearch);
-
         getVideosList();
         runnable.run();
-        listHistorySearch = (ArrayList) sqlHelper.getAllHistoryAdvanced();
-        if (listHistorySearch != null) {
-            adapter = new ArrayAdapter<String>(getBaseContext(),
-                    android.R.layout.simple_dropdown_item_1line, listHistorySearch);
-            binding.listHistory.setAdapter(adapter);
-        }
+        getHistory();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -110,6 +97,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
                     binding.rvSearchVideo.setAdapter(adapterVideo);
                 }
                 sqlHelper.insertHistory(query);
+                getHistory();
                 adapter.notifyDataSetChanged();
                 return false;
             }
@@ -143,7 +131,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
         binding.listHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                searchView.setQuery(listHistorySearch.get(position).toString(),false);
+                searchView.setQuery(lastHistorySearch.get(position).toString(),true);
             }
         });
     }
@@ -160,7 +148,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
                     for (VideoUlti v : videoUtilList1) {
                         videoUltiList.add(v);
                     }
-                } else {
+                } else {m
                     int sc = response.code();
                     switch (sc) {
                         case 400:
@@ -214,15 +202,27 @@ public class PlaceSearchActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (searchView.getQuery().toString().trim().length()!=0){
-                binding.listHistory.setVisibility(View.GONE);
-                binding.rvSearchVideo.setVisibility(View.VISIBLE);
-                binding.rvSearchVideo.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+                binding.llResults.setVisibility(View.VISIBLE);
+                binding.llHistory.setVisibility(View.GONE);
             } else {
-                binding.rvSearchVideo.setBackgroundColor(getResources().getColor(R.color.colorBackgroundDefaul));
-                binding.listHistory.setVisibility(View.VISIBLE);
-                binding.rvSearchVideo.setVisibility(View.GONE);
+                binding.llResults.setVisibility(View.GONE);
+                binding.llHistory.setVisibility(View.VISIBLE);
             }
             handler.postDelayed(this,0);
         }
     };
+    public void getHistory(){
+        if (listHistorySearch != null) {
+            lastHistorySearch = new ArrayList();
+            listHistorySearch = (ArrayList) sqlHelper.getAllHistoryAdvanced();
+            int i =0;
+            do {
+                lastHistorySearch.add(listHistorySearch.get(listHistorySearch.size()-1-i));
+                i++;
+            } while (i<=9);
+            adapter = new ArrayAdapter<String>(getBaseContext(),
+                    android.R.layout.simple_dropdown_item_1line, lastHistorySearch);
+            binding.listHistory.setAdapter(adapter);
+        }
+    }
 }
