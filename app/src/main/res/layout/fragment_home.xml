@@ -62,17 +62,23 @@
                     android:layout_height="@dimen/_50sdp">
                     <ImageView
                         android:id="@+id/imClose"
-                        android:layout_margin="@dimen/_5sdp"
+                        android:layout_margin="@dimen/_4sdp"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/ic_round_close_24"
                         android:layout_width="@dimen/_15sdp"
                         android:layout_height="@dimen/_15sdp"/>
-                    <TextView
+                    <com.romainpiel.shimmer.ShimmerTextView
+                        android:id="@+id/tvAds"
+                        android:layout_margin="@dimen/_5sdp"
+                        android:textStyle="italic"
                         android:layout_centerInParent="true"
                         android:gravity="center"
-                        android:text="Đây là quảng cáo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBackground"
+                        android:textSize="@dimen/_13sdp"
+                        app:reflectionColor="@color/colorBackgroundMain"/>
+
                 </RelativeLayout>
                 <LinearLayout
                     android:id="@+id/llProposed"

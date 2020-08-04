@@ -2,6 +2,8 @@ package com.example.dvhplay.home;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -12,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.example.dvhplay.Api.APIUtils;
 import com.example.dvhplay.Api.RetrofitClient;
+import com.example.dvhplay.GPSLocation.GPSLocation;
 import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.home.sliderImage.SliderImageAdapter;
@@ -29,11 +33,14 @@ import com.example.dvhplay.video.iItemOnClickVideo;
 import com.example.dvhplay.Api.iVideoService;
 
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.example.dvhplay.databinding.FragmentHomeBinding;
+import com.romainpiel.shimmer.Shimmer;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -45,10 +52,13 @@ public class HomeFragment extends Fragment {
     iVideoService videoService;
     List<VideoUlti> videoUtilList1, videoUltiList2, videoUltiList3;
     List<VideoUlti> sliderItemList = new ArrayList<>();
+    List<String> listAds = new ArrayList<>();
+    List<String> listDisttrict = new ArrayList<>();
     SliderImageAdapter sliderImageAdapter;
-
     private static final String TAG = "HomeFragment" ;
-
+    String district ="";
+    String ads = "";
+    Shimmer shimmer;
     public HomeFragment() {
     }
     public static HomeFragment newInstance() {
@@ -64,8 +74,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
+        listAds.add("DevPro đào tạo lập trình số 1 tại Hà Nội");
+        listAds.add("Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
+        listAds.add("KFC Nguyễn Trãi: Giá Siêu Khủng - chỉ 18k/1 miếng gà đã trở lại!");
+        listDisttrict.add("Cầu Giấy");
+        listDisttrict.add("Đống Đa");
+        listDisttrict.add("Từ Liêm");
         getSliderImage();
         getVideosList();
+        getAds();
         binding.imClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +161,6 @@ public class HomeFragment extends Fragment {
                             startActivity(intent);
                         }
                     });
-                    binding.rlAds.setVisibility(View.VISIBLE);
                     binding.llHotvideo.setVisibility(View.VISIBLE);
                     RecyclerView.LayoutManager layoutManagerHotVideo = new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false);
                     binding.rvHotvideo.setLayoutManager(layoutManagerHotVideo);
@@ -254,5 +270,48 @@ public class HomeFragment extends Fragment {
                 Log.e("ERROR: ", t.getMessage());
             }
         });
+    }
+    public static int ordinalIndexOf(String str, String substr, int n) {
+        int pos = str.indexOf(substr);
+        while (--n > 0 && pos != -1)
+            pos = str.indexOf(substr, pos + 1);
+        return pos;
+    }
+    public void getAds(){
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(getActivity().getBaseContext(),Locale.getDefault());
+        final GPSLocation gpsLocation = new GPSLocation(getActivity().getBaseContext());
+        try {
+            addresses = geocoder.getFromLocation(gpsLocation.getLatitude(), gpsLocation.getLongitude(), 1);
+            if (addresses.size()!=0) {
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                district = address.substring(ordinalIndexOf(address,",",2)+1,ordinalIndexOf(address,",",3));
+                for (int i =0; i<listDisttrict.size();i++){
+                    if (listDisttrict.get(i).trim().toLowerCase().equals(district.trim().toLowerCase())){
+                        ads = listAds.get(i);
+                    }
+                }
+                showAds();
+            } else binding.rlAds.setVisibility(View.GONE);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void showAds(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                binding.rlAds.setVisibility(View.VISIBLE);
+                binding.tvAds.setText(ads);
+                shimmer = new Shimmer();
+                shimmer.start(binding.tvAds);
+            }
+        }, 7000);
     }
 }
