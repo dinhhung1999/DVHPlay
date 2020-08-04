@@ -148,7 +148,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
                     for (VideoUlti v : videoUtilList1) {
                         videoUltiList.add(v);
                     }
-                } else {m
+                } else {
                     int sc = response.code();
                     switch (sc) {
                         case 400:
