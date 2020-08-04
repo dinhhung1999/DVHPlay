@@ -3,6 +3,7 @@ package com.example.dvhplay;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,10 +22,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 
+import com.example.dvhplay.PlaceSearch.PlaceSearchActivity;
 import com.example.dvhplay.databinding.ActivityMainBinding;
 import com.example.dvhplay.film.FilmFragment;
 import com.example.dvhplay.helper.CheckNetwork;
@@ -46,10 +53,22 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG ="MainActivity";
     ActivityMainBinding binding;
     CheckNetwork checkNetwork = new CheckNetwork();
+    private static final String[] COUNTRIES = new String[] { "Belgium",
+            "France", "France_", "Italy", "Germany", "Spain" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setCustomView(R.layout.toobar_layout);
+        actionBar.getCustomView().findViewById(R.id.imSearch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(),PlaceSearchActivity.class);
+                startActivity(intent);
+            }
+        });
         if (!checkRequiredPermissions()) checkRequiredPermissions();
         if (FLAG_FRAGMENT ==0) CheckInternet();
         setRefresh();
@@ -117,11 +136,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toobar_layout,menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.toobar_layout,menu);
+//        return true;
+//    }
 
     private void getFragment(Fragment fragment) {
         try {
@@ -276,9 +295,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-    @Override
-    public void onStop() {
-        super.onStop();
-        finish();
-    }
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//    }
 }

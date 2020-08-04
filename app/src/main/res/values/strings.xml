@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">DVH Play</string>
-    
+
     //MAIN
     <string name="message_request_permission_read_phone_state">We need permission to continue</string>
     <string name="tilte_dialog_check_network">No network connection</string>
@@ -43,4 +43,7 @@
 
     // PlayVideoActivity
     <string name="checkNetworkPlayVideo">No network connection, please check again</string>
+    // Search view
+    <string name="seachhint">Search Video</string>
+    <string name="noMatchFound">No Match found</string>
 </resources>

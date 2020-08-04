@@ -73,7 +73,7 @@ public class AdapterRelatedVideo extends RecyclerView.Adapter<AdapterRelatedVide
     public class ViewHoder extends RecyclerView.ViewHolder {
         ImageView imAvatar;
         TextView tvTitle,tvTimeDate;
-        RelativeLayout rlProcess,rlVideo;
+        RelativeLayout rlVideo;
         AVLoadingIndicatorView avi;
         ShimmerTextView tv;
         public ViewHoder(@NonNull View itemView) {

@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SortedList;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,11 +42,12 @@ import com.example.dvhplay.video.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "PlayVideoActivity";
-
+    Comparator<VideoUlti> comparator;
     ActivityPlayVideoBinding binding;
     private int WITDH_SCREEN;
     // Cập nhật thời gian phát
@@ -777,7 +779,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             alertDialog.show();
         }
     }
-
 
     @Override
     protected void onStop() {

@@ -175,7 +175,7 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
                 if (response.isSuccessful()){
                     videoUltiList2 = new ArrayList<>();
-                   videoUltiList2 = response.body();
+                    videoUltiList2 = response.body();
                     adapterVideo = new AdapterVideo(videoUltiList2);
                     adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
                         @Override
