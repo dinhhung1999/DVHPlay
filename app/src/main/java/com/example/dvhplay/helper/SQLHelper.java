@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.dvhplay.Models.SearchHistory;
+import com.example.dvhplay.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +19,9 @@ import androidx.annotation.Nullable;
 
 public class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
-    static final String DB_NAME = "DVHPlay.db";
+    static final String DB_NAME = "DVHPlay4.db";
     static final String DB_SearchHistory_TABLE = "SearchHistory";
+    static final String DB_USER_TABLE = "USER";
     static final int DB_VERSION = 1;
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
@@ -36,8 +38,13 @@ public class SQLHelper extends SQLiteOpenHelper {
                 "title Text," +
                 "date TIMESTAMP DEFAULT CURRENT_TIMESTAMP )";
 
-        //Chạy câu lệnh tạo bảng
         db.execSQL(queryCreaTable);
+
+        String queryCreateUserTable = "CREATE TABLE USER ( " +
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "username Text NOT NULL," +
+                "password Text NOT NULL)";
+        db.execSQL(queryCreateUserTable);
     }
 
     @Override
@@ -55,6 +62,16 @@ public class SQLHelper extends SQLiteOpenHelper {
         contentValues.put("title", title);
 
         sqLiteDatabase.insert(DB_SearchHistory_TABLE, null, contentValues);
+        closeDB();
+    }
+    public void insertUser(String username, String password) {
+        sqLiteDatabase = getWritableDatabase();
+        contentValues = new ContentValues();
+
+        contentValues.put("username", username);
+        contentValues.put("password", password);
+
+        sqLiteDatabase.insert(DB_USER_TABLE, null, contentValues);
         closeDB();
     }
 
@@ -114,6 +131,25 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
         closeDB();
         return historys;
+    }
+    public List<User> getAllUser() {
+        ArrayList users = new ArrayList<>();
+
+        sqLiteDatabase = getReadableDatabase();
+        cursor = sqLiteDatabase.query(false, DB_USER_TABLE, null, null, null
+                , null, null, null, null);
+        if (cursor!=null&&cursor.getColumnCount()!=0){
+            while (cursor.moveToNext()) {
+//            String id = cursor.getString(cursor.getColumnIndex("id"));
+                String username = cursor.getString(cursor.getColumnIndex("username"));
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String password = cursor.getString(cursor.getColumnIndex("password"));
+//            String date = cursor.getString(cursor.getColumnIndex("date"));
+                users.add(new User(id,username,password));
+            }
+        }
+        closeDB();
+        return users;
     }
 
     private void closeDB() {

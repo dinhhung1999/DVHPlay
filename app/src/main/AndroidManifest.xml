@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dvhplay">
 
     <application
@@ -11,25 +12,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PlaceSearch.PlaceSearchActivity"
-            android:parentActivityName=".MainActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.SEARCH"/>-->
-<!--            </intent-filter>-->
-<!--            <meta-data android:name="android.app.searchable"-->
-<!--                android:resource="@xml/searchable"/>-->
-        </activity>
-        <activity
-            android:name=".PlayVideo.PlayVideoActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".User.LoginActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PlaceSearch.PlaceSearchActivity"
+            android:parentActivityName=".MainActivity">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.SEARCH"/> -->
+            <!-- </intent-filter> -->
+            <!-- <meta-data android:name="android.app.searchable" -->
+            <!-- android:resource="@xml/searchable"/> -->
+        </activity>
+        <activity
+            android:name=".PlayVideo.PlayVideoActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".MainActivity" />
 
         <receiver android:name=".ServiceAndBroadcast.NotificationBroadcast">
             <intent-filter>
@@ -39,6 +45,13 @@
 
         <service android:name=".ServiceAndBroadcast.ServiceNotification" />
     </application>
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -46,10 +59,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-feature android:name="android.hardware.location" android:required="true" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
+
 </manifest>

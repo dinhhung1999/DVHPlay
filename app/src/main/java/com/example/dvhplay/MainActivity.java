@@ -60,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG ="MainActivity";
     ActivityMainBinding binding;
     CheckNetwork checkNetwork = new CheckNetwork();
-    private static final String[] COUNTRIES = new String[] { "Belgium",
-            "France", "France_", "Italy", "Germany", "Spain" };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

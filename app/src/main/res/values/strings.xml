@@ -48,4 +48,31 @@
     <string name="noMatchFound">No Match found</string>
     <string name="searchHistory">Search history</string>
     <string name="searchResults">Search Results</string>
+
+
+    // login
+    <string name="titleLogin">We pursue a relaxed watching movie experience</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signup">Sign up</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_email">Not a valid email address</string>
+    <string name="username_empty">Username can\'t be emtpy</string>
+    <string name="invalid_password">Password must be >6 characters</string>
+    <string name="incorrectPassword">Incorrect password</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="forgotPassword">"Forgot password?"</string>
+    <string name="usernameAvailable">Username available</string>
+    <string name="usernameNotExist">Username does not exist</string>
+    <string name="hasSpaces">Password cannot contain spaces</string>
+    <string name="hasUpper">Password must contain at least 1 uppercase letter</string>
+    <string name="hasLower">Password must contain at least 1 lowercase letter</string>
+    <string name="hasNumber">Password must contain at least 1 number</string>
+    <string name="hasSymbol">Password must contain at least 1 symbol</string>
+    <string name="registerSuccess">Register success</string>
+    <string name="loginSuccess">Login success</string>
+    <string name="wellcome"></string>
+    <string name="featureDevelopment">Features are under development</string>
 </resources>

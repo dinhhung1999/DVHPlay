@@ -14,4 +14,7 @@
     <color name="colorBackground">#000</color>
     <color name="colorBackgroundItemMain">#181E21</color>
     <color name="colorButtonDialog">#F87E00</color>
+
+    //login
+    <color name="textInputLayout">#96ffffff</color>
 </resources>

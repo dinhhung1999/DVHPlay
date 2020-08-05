@@ -25,7 +25,13 @@
     <style name="fontTextItem">
         <item name="android:textSize">@dimen/_11sdp</item>
         <item name="android:textColor">@color/colorWhite</item>
-
-</style>
+    </style>
+    <style name="EditScreenTextInputLayoutStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/textInputLayout</item>
+        <item name="colorControlActivated">@color/textInputLayout</item>
+        <item name="colorControlHighlight">@color/textInputLayout</item>
+        <item name="colorAccent">@color/textInputLayout</item>
+        <item name="android:textColorHint">@color/textInputLayout</item>
+    </style>
 
 </resources>
