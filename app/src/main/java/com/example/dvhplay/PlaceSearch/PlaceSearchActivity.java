@@ -103,7 +103,6 @@ public class PlaceSearchActivity extends AppCompatActivity {
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
                     listSearch = new ArrayList<>();
                     for (VideoUlti v : videoUltiList ) {
                         if (v.getTitle().toLowerCase().contains(newText.toLowerCase())) {
@@ -212,7 +211,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
         }
     };
     public void getHistory(){
-        if (listHistorySearch != null) {
+        if (listHistorySearch.size()!=0) {
             lastHistorySearch = new ArrayList();
             listHistorySearch = (ArrayList) sqlHelper.getAllHistoryAdvanced();
             int i =0;

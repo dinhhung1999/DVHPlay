@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +40,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import com.example.dvhplay.databinding.FragmentHomeBinding;
 import com.romainpiel.shimmer.Shimmer;
@@ -74,12 +77,16 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
-        listAds.add("DevPro đào tạo lập trình số 1 tại Hà Nội");
-        listAds.add("Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
+        listAds.add("Quận Cầu Giấy: DevPro đào tạo lập trình số 1 tại Hà Nội");
+        listAds.add("Quận Đống Đa: Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
         listAds.add("KFC Nguyễn Trãi: Giá Siêu Khủng - chỉ 18k/1 miếng gà đã trở lại!");
+        listAds.add("Quận Hà Đông: Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
+        listAds.add("Quận Thanh Xuân: Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
         listDisttrict.add("Cầu Giấy");
         listDisttrict.add("Đống Đa");
         listDisttrict.add("Từ Liêm");
+        listDisttrict.add("Hà Đông");
+        listDisttrict.add("Thanh Xuân");
         getSliderImage();
         getVideosList();
         getAds();
@@ -271,7 +278,17 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+    public static int countChar(String str, String substr) {
+        int count =0;
+        for (int i =0 ; i< str.length();i++) {
+            if (substr.charAt(0) == str.charAt(i)) {
+                count ++;
+            }
+        }
+        return count;
+    }
     public static int ordinalIndexOf(String str, String substr, int n) {
+
         int pos = str.indexOf(substr);
         while (--n > 0 && pos != -1)
             pos = str.indexOf(substr, pos + 1);
@@ -286,11 +303,12 @@ public class HomeFragment extends Fragment {
             addresses = geocoder.getFromLocation(gpsLocation.getLatitude(), gpsLocation.getLongitude(), 1);
             if (addresses.size()!=0) {
                 String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                district = address.substring(ordinalIndexOf(address,",",2)+1,ordinalIndexOf(address,",",3));
-                for (int i =0; i<listDisttrict.size();i++){
-                    if (listDisttrict.get(i).trim().toLowerCase().equals(district.trim().toLowerCase())){
+                int count = countChar(address,",");
+                district = address.substring(ordinalIndexOf(address,",",count-2)+2,ordinalIndexOf(address,",",count-1));
+                for (int i =listDisttrict.size()-1; i<listDisttrict.size();i++){
+                    if (listDisttrict.get(i).trim().equalsIgnoreCase(district.trim())){
                         ads = listAds.get(i);
-                    }
+                    } else ads = listAds.get(new Random().nextInt(listAds.size()));
                 }
                 showAds();
             } else binding.rlAds.setVisibility(View.GONE);
@@ -307,10 +325,10 @@ public class HomeFragment extends Fragment {
         handler.postDelayed(new Runnable(){
             @Override
             public void run(){
-                binding.rlAds.setVisibility(View.VISIBLE);
-                binding.tvAds.setText(ads);
-                shimmer = new Shimmer();
-                shimmer.start(binding.tvAds);
+                    binding.rlAds.setVisibility(View.VISIBLE);
+                    binding.tvAds.setText(ads);
+                    shimmer = new Shimmer();
+                    shimmer.start(binding.tvAds);
             }
         }, 7000);
     }

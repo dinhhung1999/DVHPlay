@@ -1,7 +1,6 @@
 package com.example.dvhplay;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -10,26 +9,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
-
 import com.example.dvhplay.PlaceSearch.PlaceSearchActivity;
 import com.example.dvhplay.databinding.ActivityMainBinding;
 import com.example.dvhplay.film.FilmFragment;
@@ -38,14 +23,36 @@ import com.example.dvhplay.home.HomeFragment;
 import com.example.dvhplay.more.MoreFragment;
 import com.example.dvhplay.myMedia.MyMediaFragment;
 import com.example.dvhplay.tv.TVFragment;
-import com.facebook.stetho.inspector.protocol.module.Network;
-import com.google.android.gms.maps.model.LatLng;
-
-import java.net.InetAddress;
-
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import pub.devrel.easypermissions.EasyPermissions;
-
+/**
+ *
+ //                       _ooOoo_
+ //                      o8888888o
+ //                      88" . "88
+ //                      (| -_- |)
+ //                       O\ = /O
+ //                   ____/`---'\____
+ //                 .   ' \\| |// `.
+ //                  / \\||| : |||// \
+ //                / _||||| -:- |||||- \
+ //                  | | \\\ - /// | |
+ //                | \_| ''\---/'' | |
+ //                 \ .-\__ `-` ___/-. /
+ //              ______`. .' /--.--\ `. . __
+ //           ."" '< `.___\_<|>_/___.' >'"".
+ //          | | : `- \`.;`\ _ /`;.`/ - ` : | |
+ //            \ \ `-. \_ __\ /__ _/ .-` / /
+ //    ======`-.____`-.___\_____/___.-`____.-'======
+ //                       `=---='
+ //
+ //    .............................................
+ //                    Pray for no Bugs
+ * =====================================================
+ * Name：DVHHung
+ * Create on：2020-06-21
+ * =====================================================
+ */
 public class MainActivity extends AppCompatActivity {
     private int FLAG_FRAGMENT = 0;
     private static final int MAINACTIVITY = 2000;

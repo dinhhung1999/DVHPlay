@@ -77,7 +77,6 @@ public class MyMediaFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        ArrayList<String> downloadedList = new ArrayList<>(videoItemHashSet);
         return videoInDeviceList;
     }
 }
