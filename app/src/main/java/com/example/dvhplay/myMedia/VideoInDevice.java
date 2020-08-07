@@ -1,6 +1,8 @@
 package com.example.dvhplay.myMedia;
 
-public class VideoInDevice {
+import java.io.Serializable;
+
+public class VideoInDevice implements Serializable {
     String path;
 
     public VideoInDevice(String path) {

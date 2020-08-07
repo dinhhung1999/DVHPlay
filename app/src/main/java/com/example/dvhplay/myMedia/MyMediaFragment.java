@@ -55,6 +55,7 @@ public class MyMediaFragment extends Fragment {
                 Intent intent = new Intent(getActivity().getBaseContext(),PlayVideoActivity.class);
                 intent.setFlags(-1);
                 intent.putExtra("path",videoInDevice.getPath());
+                intent.putExtra("video", (Serializable) videoInDevice);
                 intent.putExtra("videoUtilList", (Serializable) videoInDeviceList);
                 intent.putExtra("position", position);
                 startActivity(intent);

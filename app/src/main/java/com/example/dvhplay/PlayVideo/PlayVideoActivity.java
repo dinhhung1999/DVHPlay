@@ -19,18 +19,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.CookieManager;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 
 import com.example.dvhplay.MainActivity;
 import com.example.dvhplay.Models.Comment;
-import com.example.dvhplay.Models.FavoriteVideo;
 import com.example.dvhplay.PlayVideo.Comments.AdapterComment;
 import com.example.dvhplay.R;
 import com.example.dvhplay.ServiceAndBroadcast.ServiceNotification;
@@ -50,11 +47,12 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     SQLHelper sqlHelper;
     List<Comment> comments;
     List<Comment> lastComments;
-    List<FavoriteVideo> favoriteVideos;
-    List<FavoriteVideo> favorite;
+    List<VideoUlti> favoriteVideos;
+    List<VideoUlti> favorite;
     AdapterComment adapterComment;
     int user_id = 0;
     String username = "";
+    boolean isVideoOnline =true;
     ActivityPlayVideoBinding binding;
     private int WITDH_SCREEN;
     // Cập nhật thời gian phát
@@ -179,12 +177,15 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         switch (intent.getFlags()){
             case -1:
                 path = intent.getStringExtra("path");
-                binding.llCommentAndFavortie.setVisibility(View.GONE);
+                binding.llBottomVideo.setVisibility(View.GONE);
+                binding.svBottom.setVisibility(View.GONE);
+                isVideoOnline=false;
                 break;
             default:
                 video = (VideoUlti) intent.getSerializableExtra("video");
                 binding.tvTitleVideo.setText(video.getTitle());
                 url = video.getFile_mp4();
+                isVideoOnline = true;
                 break;
         }
         user_id = sharePreference.getIntValue("user_id",1);
@@ -398,7 +399,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             @Override
             public void onClick(View v) {
                 if(!follow) {
-                    sqlHelper.insertFavorite(user_id,video.getId(),video.getTitle(),video.getAvatar(),video.getFile_mp4());
+                    sqlHelper.insertFavorite(video.getId(),user_id,video.getTitle(),video.getAvatar(),video.getFile_mp4(),video.getDate_published());
                     setFavoriteVideo();
                 } else {
                     favoriteVideos = new ArrayList<>();
@@ -431,20 +432,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 }
             }
         });
-
-        videoUltiList.remove(itemPosition);
-        videoUltiList.add(0,video);
-        adapterVideo = new AdapterRelatedVideo(videoUltiList);
-        adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
-            @Override
-            public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
-                itemPosition = position;
-                changeVideo();
-            }
-        });
-        RecyclerView.LayoutManager GridlayoutManager = new GridLayoutManager(getBaseContext(), 1, RecyclerView.VERTICAL, false);
-        binding.rvRelatedVideos.setLayoutManager(GridlayoutManager);
-        binding.rvRelatedVideos.setAdapter(adapterVideo);
+        getRelatedVideo();
         binding.imSkipNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -462,7 +450,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     }
     private void initOnjects() {
         binding.nbVideo.setOnSeekBarChangeListener(this);
-        if (intent.getFlags()==-1){
+        if (!isVideoOnline){
             binding.vvPlayVideo.setVideoPath(path);
         }else {
             binding.vvPlayVideo.setVideoURI(Uri.parse(url));
@@ -746,70 +734,97 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         hideComment = false;
     }
     public void changeVideo(){
-        isPlaying = true;
-        binding.imPauseOrResume.setImageResource(R.drawable.ic_round_pause_24);
-        binding.vvPlayVideo.stopPlayback();
-        binding.vvPlayVideo.seekTo(0);
-        video = videoUltiList.get(itemPosition);
-        videoUltiList.remove(video);
-        videoUltiList.add(0,video);
-        adapterVideo.notifyDataSetChanged();
-        binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
-        binding.tvTitleVideo.setText(video.getTitle());
-        binding.prBar.setVisibility(View.VISIBLE);
-        binding.vvPlayVideo.start();
-        binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-                binding.prBar.setVisibility(View.GONE);
-            }
-        });
-        getFavoriteVideo();
-        setHideComment();
+        if (isVideoOnline){
+            isPlaying = true;
+            binding.imPauseOrResume.setImageResource(R.drawable.ic_round_pause_24);
+            binding.vvPlayVideo.stopPlayback();
+            binding.vvPlayVideo.seekTo(0);
+            video = videoUltiList.get(itemPosition);
+            videoUltiList.remove(video);
+            videoUltiList.add(0,video);
+            adapterVideo.notifyDataSetChanged();
+            binding.vvPlayVideo.setVideoURI(Uri.parse(video.getFile_mp4()));
+            binding.tvTitleVideo.setText(video.getTitle());
+            binding.prBar.setVisibility(View.VISIBLE);
+            binding.vvPlayVideo.start();
+            binding.vvPlayVideo.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    binding.prBar.setVisibility(View.GONE);
+                }
+            });
+            getFavoriteVideo();
+            setHideComment();
+        }
     }
     public void selectComment(){
-        comments = new ArrayList<>();
-        comments = sqlHelper.getALlComment(video.getId());
-        lastComments = new ArrayList<>();
-        if (comments.size()>0){
-            int i =0;
-            do {
-                lastComments.add(comments.get(comments.size()-1-i));
-                i++;
-            } while (i<3 && comments.size()>i);
-            binding.tvTotalComments.setText("("+comments.size()+")");
-            adapterComment = new AdapterComment(lastComments);
-            RecyclerView.LayoutManager layoutManagerComment = new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false);
-            binding.rvComment.setLayoutManager(layoutManagerComment);
-            binding.rvComment.setAdapter(adapterComment);
-            adapterComment.notifyDataSetChanged();
+        if (isVideoOnline){
+            comments = new ArrayList<>();
+            comments = sqlHelper.getALlComment(video.getId());
+            lastComments = new ArrayList<>();
+            if (comments.size()>0){
+                int i =0;
+                do {
+                    lastComments.add(comments.get(comments.size()-1-i));
+                    i++;
+                } while (i<3 && comments.size()>i);
+                binding.tvTotalComments.setText("("+comments.size()+")");
+                adapterComment = new AdapterComment(lastComments);
+                RecyclerView.LayoutManager layoutManagerComment = new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false);
+                binding.rvComment.setLayoutManager(layoutManagerComment);
+                binding.rvComment.setAdapter(adapterComment);
+                adapterComment.notifyDataSetChanged();
+            }
         }
     }
     public void setFavoriteVideo(){
-        binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
-        binding.tvFollow.setText(R.string.unfollow);
-        binding.btnFollow.setChecked(true,true);
-        follow = true;
+       if (isVideoOnline){
+           binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
+           binding.tvFollow.setText(R.string.unfollow);
+           binding.btnFollow.setChecked(true,true);
+           follow = true;
+       }
     }
     public void setUnFavoriteVideo(){
-        binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
-        binding.btnFollow.setChecked(false,true);
-        binding.tvFollow.setText(R.string.follow);
-        follow = false;
+        if (isVideoOnline){
+            binding.tvFollow.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
+            binding.btnFollow.setChecked(false,true);
+            binding.tvFollow.setText(R.string.follow);
+            follow = false;
+        }
     }
     public void getFavoriteVideo(){
-        binding.btnFollow.setClickable(false);
-        favoriteVideos = new ArrayList<>();
-        favorite = new ArrayList<>();
-        if (sqlHelper.getALlFavorite(user_id).size()!=0){
-            favoriteVideos = sqlHelper.getALlFavorite(user_id);
-            for (FavoriteVideo favoriteVideo : favoriteVideos ){
-                if (favoriteVideo.getVideo_id() == video.getId())
-                favorite.add(favoriteVideo);
-            }
-            if (favorite.size()!=0) setFavoriteVideo();
-            else setUnFavoriteVideo();
-        } else setUnFavoriteVideo();
+        if (isVideoOnline){
+            binding.btnFollow.setClickable(false);
+            favoriteVideos = new ArrayList<>();
+            favorite = new ArrayList<>();
+            if (sqlHelper.getALlFavorite(user_id).size()!=0){
+                favoriteVideos = sqlHelper.getALlFavorite(user_id);
+                for (VideoUlti favoriteVideo : favoriteVideos ){
+                    if (favoriteVideo.getId() == video.getId())
+                        favorite.add(favoriteVideo);
+                }
+                if (favorite.size()!=0) setFavoriteVideo();
+                else setUnFavoriteVideo();
+            } else setUnFavoriteVideo();
+        }
+    }
+    public void getRelatedVideo(){
+        if (isVideoOnline){
+            videoUltiList.remove(itemPosition);
+            videoUltiList.add(0,video);
+            adapterVideo = new AdapterRelatedVideo(videoUltiList);
+            adapterVideo.setiItemOnClickVideo(new iItemOnClickVideo() {
+                @Override
+                public void setItemOnClickVideo(VideoUlti videoUlti, int position) {
+                    itemPosition = position;
+                    changeVideo();
+                }
+            });
+            RecyclerView.LayoutManager GridlayoutManager = new GridLayoutManager(getBaseContext(), 1, RecyclerView.VERTICAL, false);
+            binding.rvRelatedVideos.setLayoutManager(GridlayoutManager);
+            binding.rvRelatedVideos.setAdapter(adapterVideo);
+        }
     }
     @Override
     protected void onStop() {

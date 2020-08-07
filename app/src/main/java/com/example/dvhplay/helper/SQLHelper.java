@@ -3,25 +3,20 @@ package com.example.dvhplay.helper;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.example.dvhplay.Models.Comment;
-import com.example.dvhplay.Models.FavoriteVideo;
 import com.example.dvhplay.Models.SearchHistory;
 import com.example.dvhplay.Models.User;
+import com.example.dvhplay.Models.VideoUlti;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 public class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
-    static final String DB_NAME = "db2.db";
+    static final String DB_NAME = "Database.db";
     static final String DB_SEARCH_TABLE = "SEARCH";
     static final String DB_USER_TABLE = "USER";
     static final String DB_COMMENT_TABLE = "COMMENT";
@@ -35,7 +30,7 @@ public class SQLHelper extends SQLiteOpenHelper {
     static final String FILE_MP4 = "file_mp4";
     static final String USERNAME = "username";
     static final String PASSWORD = "password";
-    static final String TIME = "time";
+    static final String DATE_PUBLISHED = "date_published";
     static final int DB_VERSION = 1;
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
@@ -49,8 +44,9 @@ public class SQLHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String queryCreaTable = "CREATE TABLE SEARCH ( " +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "user_id INTEGER NOT NULL," +
                 "title Text," +
-                "date TIMESTAMP DEFAULT CURRENT_TIMESTAMP )";
+                "FOREIGN KEY (user_id) REFERENCES USER(id))";
 
         db.execSQL(queryCreaTable);
 
@@ -71,11 +67,12 @@ public class SQLHelper extends SQLiteOpenHelper {
 
         String queryCreateFavoriteTable = "CREATE TABLE FAVORITE ( " +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
-                "user_id INTEGER NOT NULL," +
                 "video_id INTEGER NOT NULL," +
+                "user_id INTEGER NOT NULL," +
                 "title Text NOT NULL,"+
                 "avatar Text NOT NULL,"+
-                "file_mp4 NOT NULL,"+
+                "file_mp4 Text NOT NULL,"+
+                "date_published Text,"+
                 "FOREIGN KEY (user_id) REFERENCES USER(id))";
         db.execSQL(queryCreateFavoriteTable);
     }
@@ -88,10 +85,11 @@ public class SQLHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertHistory(String title) {
+    public void insertHistory(int user_id,String title) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
 
+        contentValues.put(USER_ID, user_id);
         contentValues.put(TITLE, title);
 
         sqLiteDatabase.insert(DB_SEARCH_TABLE, null, contentValues);
@@ -120,16 +118,15 @@ public class SQLHelper extends SQLiteOpenHelper {
         sqLiteDatabase.insert(DB_COMMENT_TABLE, null, contentValues);
         closeDB();
     }
-    public void insertFavorite(int user_id,int video_id, String title, String avatar, String file_mp4) {
+    public void insertFavorite(int video_id, int user_id, String title, String avatar, String file_mp4, String date_published) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
-
-        contentValues.put(USER_ID, user_id);
         contentValues.put(VIDEO_ID, video_id);
+        contentValues.put(USER_ID, user_id);
         contentValues.put(TITLE, title);
         contentValues.put(AVATAR, avatar);
         contentValues.put(FILE_MP4, file_mp4);
-
+        contentValues.put(DATE_PUBLISHED,date_published);
         sqLiteDatabase.insert(DB_FAVORITE_TABLE, null, contentValues);
         closeDB();
     }
@@ -159,24 +156,24 @@ public class SQLHelper extends SQLiteOpenHelper {
 //        closeDB();
 //    }
 //
-    public List<SearchHistory> getAllHistoryAdvanced() {
-        ArrayList historys = new ArrayList<>();
+    public List<SearchHistory> getAllHistoryAdvanced(int user_id) {
+        List<SearchHistory> historys = new ArrayList<>();
 
         sqLiteDatabase = getReadableDatabase();
         cursor = sqLiteDatabase.query(false, DB_SEARCH_TABLE, null, null, null
                 , null, null, null, null);
-
-        while (cursor.moveToNext()) {
-//            String id = cursor.getString(cursor.getColumnIndex("id"));
-            String title = cursor.getString(cursor.getColumnIndex("title"));
-//            String date = cursor.getString(cursor.getColumnIndex("date"));
-            historys.add(title);
+        if (cursor!=null&&cursor.getColumnCount()!=0) {
+            while (cursor.moveToNext()) {
+                int id_user = cursor.getInt(cursor.getColumnIndex("user_id"));
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                if (user_id == id_user) historys.add(new SearchHistory(id_user,title));
+            }
         }
         closeDB();
         return historys;
     }
     public List<User> getAllUser() {
-        ArrayList users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
 
         sqLiteDatabase = getReadableDatabase();
         cursor = sqLiteDatabase.query(false, DB_USER_TABLE, null, null, null
@@ -211,20 +208,20 @@ public class SQLHelper extends SQLiteOpenHelper {
         closeDB();
         return comments;
     }
-    public List<FavoriteVideo> getALlFavorite(int id_user){
-        List<FavoriteVideo> videos = new ArrayList<>();
+    public List<VideoUlti> getALlFavorite(int id_user){
+        List<VideoUlti> videos = new ArrayList<>();
         sqLiteDatabase = getReadableDatabase();
         cursor = sqLiteDatabase.query(false, DB_FAVORITE_TABLE, null, null, null
                 , null, null, null, null);
         if (cursor!=null&&cursor.getColumnCount()!=0){
             while (cursor.moveToNext()) {
-                int id = cursor.getInt(cursor.getColumnIndex(ID));
                 int user_id = cursor.getInt(cursor.getColumnIndex(USER_ID));
                 int video_id = cursor.getInt(cursor.getColumnIndex(VIDEO_ID));
                 String title = cursor.getString(cursor.getColumnIndex(TITLE));
                 String avatar = cursor.getString(cursor.getColumnIndex(AVATAR));
                 String file_mp4 = cursor.getString(cursor.getColumnIndex(FILE_MP4));
-                if (user_id == id_user)videos.add(new FavoriteVideo(id,user_id,video_id,title,avatar,file_mp4));
+                String date_published = cursor.getString(cursor.getColumnIndex(DATE_PUBLISHED));
+                if (user_id == id_user)videos.add(new VideoUlti(video_id,user_id,title,avatar,file_mp4,date_published));
             }
         }
         closeDB();

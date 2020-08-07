@@ -32,6 +32,7 @@ import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.ActivityPlaceSearchBinding;
 import com.example.dvhplay.helper.SQLHelper;
+import com.example.dvhplay.helper.VFMSharePreference;
 import com.example.dvhplay.video.AdapterVideo;
 import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
@@ -47,19 +48,23 @@ public class PlaceSearchActivity extends AppCompatActivity {
     SQLHelper sqlHelper;
     public ArrayAdapter adapter;
     List <SearchHistory> listHistorySearch;
-    List <SearchHistory> lastHistorySearch ;
+    ArrayList lastHistorySearch ;
     com.example.dvhplay.Api.APIUtils APIUtils = new APIUtils();
     AdapterVideo adapterVideo;
     iVideoService videoService;
     List<VideoUlti> videoUtilList1, videoUltiList2, listSearch, videoUltiList;
     SearchView searchView;
     Handler handler = new Handler();
+    VFMSharePreference sharePreference;
+    int user_id=0;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_place_search);
+        sharePreference = new VFMSharePreference(this);
         sqlHelper = new SQLHelper(getBaseContext());
+        user_id = sharePreference.getIntValue("user_id",0);
         listHistorySearch = new ArrayList<>();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -96,7 +101,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
                     binding.rvSearchVideo.setLayoutManager(layoutManager);
                     binding.rvSearchVideo.setAdapter(adapterVideo);
                 }
-                sqlHelper.insertHistory(query);
+                sqlHelper.insertHistory(user_id,query);
                 getHistory();
                 return false;
             }
@@ -209,12 +214,12 @@ public class PlaceSearchActivity extends AppCompatActivity {
         }
     };
     public void getHistory(){
-        listHistorySearch = sqlHelper.getAllHistoryAdvanced();
+        listHistorySearch = sqlHelper.getAllHistoryAdvanced(user_id);
         if (listHistorySearch.size()>0) {
             lastHistorySearch = new ArrayList();
             int i =0;
             do {
-                lastHistorySearch.add(listHistorySearch.get(listHistorySearch.size()-1-i));
+                lastHistorySearch.add(listHistorySearch.get(listHistorySearch.size()-1-i).getTitle());
                 i++;
             } while ( i<=9 && listHistorySearch.size()>i);
             adapter = new ArrayAdapter<SearchHistory>(getBaseContext(),

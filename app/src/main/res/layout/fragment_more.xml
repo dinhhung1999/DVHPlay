@@ -2,6 +2,49 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- TODO: Update blank fragment layout -->
-
+<RelativeLayout
+    android:background="@drawable/good_night_img"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/child_Fragment"
+        android:layout_margin="@dimen/_7sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:id="@+id/llListMore"
+        android:gravity="right"
+        android:layout_margin="@dimen/_7sdp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_margin="@dimen/_7sdp"
+            android:text="@string/hello"
+            style="@style/fontMoreFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_margin="@dimen/_7sdp"
+            style="@style/fontUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvListFavorite"
+            android:layout_margin="@dimen/_7sdp"
+            android:text="@string/listFavorie"
+            style="@style/fontMoreFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvLogout"
+            android:layout_margin="@dimen/_7sdp"
+            android:text="@string/logout"
+            style="@style/fontMoreFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</RelativeLayout>
 
 </layout>

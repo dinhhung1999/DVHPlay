@@ -75,4 +75,11 @@
     <string name="loginSuccess">Login success</string>
     <string name="wellcome"></string>
     <string name="featureDevelopment">Features are under development</string>
+
+    //More fragment
+    <string name="hello">Hello !</string>
+    <string name="listFavorie">List of your favorite videos</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirmLogout">Are you sure you want to log out?</string>
 </resources>

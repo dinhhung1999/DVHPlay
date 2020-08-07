@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (loginUser.getEditText().getText().toString().equals(users.get(i).getUsername())) {
                                 if (md5(loginPass.getEditText().getText().toString()).equals(users.get(i).getPassword())) {
                                     Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                                    Toast.makeText(getBaseContext(),getText(R.string.loginSuccess)+" \n"+getText(R.string.wellcome)+" "+users.get(i).getUsername(),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(),getText(R.string.loginSuccess)+" \n"+" "+users.get(i).getUsername(),Toast.LENGTH_SHORT).show();
                                     sharePreference.putStringValue("username",users.get(i).getUsername());
                                     sharePreference.putStringValue("password", loginPass.getEditText().getText().toString());
                                     sharePreference.putIntValue("user_id",users.get(i).getId());

@@ -33,5 +33,12 @@
         <item name="colorAccent">@color/textInputLayout</item>
         <item name="android:textColorHint">@color/textInputLayout</item>
     </style>
-
+    <style name="fontMoreFragment">
+        <item name="android:textSize">@dimen/_15sdp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+    <style name="fontUserName">
+        <item name="android:textSize">@dimen/_17sdp</item>
+        <item name="android:textColor">@color/colorBackgroundMain</item>
+    </style>
 </resources>
