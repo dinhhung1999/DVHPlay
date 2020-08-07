@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,7 +28,7 @@ import com.example.dvhplay.R;
 import com.example.dvhplay.home.sliderImage.SliderImageAdapter;
 import com.example.dvhplay.home.sliderImage.iItemOnClickSlider;
 import com.example.dvhplay.video.AdapterVideo;
-import com.example.dvhplay.video.VideoUlti;
+import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
 import com.example.dvhplay.Api.iVideoService;
 

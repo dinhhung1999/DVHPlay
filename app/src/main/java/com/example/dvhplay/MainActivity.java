@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        if (!checkRequiredPermissions()) checkRequiredPermissions();
         if (FLAG_FRAGMENT ==0) CheckInternet();
         setRefresh();
         binding.llHome.setOnClickListener(new View.OnClickListener() {
@@ -168,32 +167,6 @@ public class MainActivity extends AppCompatActivity {
         binding.tvFilm.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
         binding.tvTV.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
         binding.tvMore.setTextColor(getResources().getColor(R.color.colorBackgroundDefaul));
-    }
-    private boolean checkRequiredPermissions(){
-        String[] perms ={Manifest.permission.CHANGE_CONFIGURATION,
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.CHANGE_NETWORK_STATE,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.LOCATION_HARDWARE,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (!EasyPermissions.hasPermissions(this,perms)){
-            // Do not have permissions, request them now
-            EasyPermissions.requestPermissions(this,getString(R.string.message_request_permission_read_phone_state),MAINACTIVITY,perms);
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        // Forward results to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
     public void CheckInternet(){
         if (!checkNetwork.isNetworkConnected(getBaseContext())|| !checkNetwork.isInternetAvailable(getBaseContext())){

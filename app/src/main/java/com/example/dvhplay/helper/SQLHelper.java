@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.dvhplay.Models.Comment;
+import com.example.dvhplay.Models.FavoriteVideo;
 import com.example.dvhplay.Models.SearchHistory;
 import com.example.dvhplay.Models.User;
 
@@ -19,9 +21,21 @@ import androidx.annotation.Nullable;
 
 public class SQLHelper extends SQLiteOpenHelper {
     private static final String TAG = "SQLHelper";
-    static final String DB_NAME = "DVHPlay4.db";
-    static final String DB_SearchHistory_TABLE = "SearchHistory";
+    static final String DB_NAME = "db2.db";
+    static final String DB_SEARCH_TABLE = "SEARCH";
     static final String DB_USER_TABLE = "USER";
+    static final String DB_COMMENT_TABLE = "COMMENT";
+    static final String DB_FAVORITE_TABLE = "FAVORITE";
+    static final String ID = "id";
+    static final String USER_ID = "user_id";
+    static final String VIDEO_ID = "video_id";
+    static final String CONTENT = "content";
+    static final String TITLE = "title";
+    static final String AVATAR = "avatar";
+    static final String FILE_MP4 = "file_mp4";
+    static final String USERNAME = "username";
+    static final String PASSWORD = "password";
+    static final String TIME = "time";
     static final int DB_VERSION = 1;
     SQLiteDatabase sqLiteDatabase;
     ContentValues contentValues;
@@ -33,7 +47,7 @@ public class SQLHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String queryCreaTable = "CREATE TABLE SearchHistory ( " +
+        String queryCreaTable = "CREATE TABLE SEARCH ( " +
                 "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 "title Text," +
                 "date TIMESTAMP DEFAULT CURRENT_TIMESTAMP )";
@@ -45,12 +59,31 @@ public class SQLHelper extends SQLiteOpenHelper {
                 "username Text NOT NULL," +
                 "password Text NOT NULL)";
         db.execSQL(queryCreateUserTable);
+
+        String queryCreateCommentTable = "CREATE TABLE COMMENT ( " +
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "user_id INTEGER NOT NULL," +
+                "video_id INTEGER NOT NULL,"+
+                "username Text NOT NULL," +
+                "content Text NOT NULL,"+
+                "FOREIGN KEY (user_id) REFERENCES USER(id))";
+        db.execSQL(queryCreateCommentTable);
+
+        String queryCreateFavoriteTable = "CREATE TABLE FAVORITE ( " +
+                "id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                "user_id INTEGER NOT NULL," +
+                "video_id INTEGER NOT NULL," +
+                "title Text NOT NULL,"+
+                "avatar Text NOT NULL,"+
+                "file_mp4 NOT NULL,"+
+                "FOREIGN KEY (user_id) REFERENCES USER(id))";
+        db.execSQL(queryCreateFavoriteTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion != newVersion) {
-            db.execSQL("drop table if exists " + DB_SearchHistory_TABLE);
+            db.execSQL("drop table if exists " + DB_SEARCH_TABLE);
             onCreate(db);
         }
     }
@@ -59,27 +92,52 @@ public class SQLHelper extends SQLiteOpenHelper {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
 
-        contentValues.put("title", title);
+        contentValues.put(TITLE, title);
 
-        sqLiteDatabase.insert(DB_SearchHistory_TABLE, null, contentValues);
+        sqLiteDatabase.insert(DB_SEARCH_TABLE, null, contentValues);
         closeDB();
     }
     public void insertUser(String username, String password) {
         sqLiteDatabase = getWritableDatabase();
         contentValues = new ContentValues();
 
-        contentValues.put("username", username);
-        contentValues.put("password", password);
+        contentValues.put(USERNAME, username);
+        contentValues.put(PASSWORD, password);
 
         sqLiteDatabase.insert(DB_USER_TABLE, null, contentValues);
         closeDB();
     }
+    public void insertComment(int user_id,int video_id,String username, String content) {
+        sqLiteDatabase = getWritableDatabase();
+        contentValues = new ContentValues();
 
-//    public int deleteProduct(String id) {
-//        sqLiteDatabase = getWritableDatabase();
-//        return sqLiteDatabase.delete(DB_SearchHistory_TABLE, " id=?",
-//                new String[]{String.valueOf(id)});
-//    }
+        contentValues.put(USER_ID, user_id);
+        contentValues.put(VIDEO_ID, video_id);
+        contentValues.put(USERNAME, username);
+
+        contentValues.put(CONTENT, content);
+
+        sqLiteDatabase.insert(DB_COMMENT_TABLE, null, contentValues);
+        closeDB();
+    }
+    public void insertFavorite(int user_id,int video_id, String title, String avatar, String file_mp4) {
+        sqLiteDatabase = getWritableDatabase();
+        contentValues = new ContentValues();
+
+        contentValues.put(USER_ID, user_id);
+        contentValues.put(VIDEO_ID, video_id);
+        contentValues.put(TITLE, title);
+        contentValues.put(AVATAR, avatar);
+        contentValues.put(FILE_MP4, file_mp4);
+
+        sqLiteDatabase.insert(DB_FAVORITE_TABLE, null, contentValues);
+        closeDB();
+    }
+    public int deleteFavorite(int id) {
+        sqLiteDatabase = getWritableDatabase();
+        return sqLiteDatabase.delete(DB_FAVORITE_TABLE, " video_id=?",
+                new String[]{String.valueOf(id)});
+    }
 
 //    public boolean delAllProduct() {
 //        int result;
@@ -101,26 +159,11 @@ public class SQLHelper extends SQLiteOpenHelper {
 //        closeDB();
 //    }
 //
-
-//    public void getAllProduct() {
-//        sqLiteDatabase = getReadableDatabase();
-//        cursor = sqLiteDatabase.query(false, DB_SearchHistory_TABLE, null,
-//                null, null, null, null, null, null);
-//
-//        while (cursor.moveToNext()) {
-//            int id = cursor.getInt(cursor.getColumnIndex("id"));
-//            String name = cursor.getString(cursor.getColumnIndex("name"));
-//            int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
-//            Log.d(TAG, "getAllProduct: " + "id - " + id + " - name - " + name + " - quantity - " + quantity);
-//        }
-//        closeDB();
-//    }
-
     public List<SearchHistory> getAllHistoryAdvanced() {
         ArrayList historys = new ArrayList<>();
 
         sqLiteDatabase = getReadableDatabase();
-        cursor = sqLiteDatabase.query(false, DB_SearchHistory_TABLE, null, null, null
+        cursor = sqLiteDatabase.query(false, DB_SEARCH_TABLE, null, null, null
                 , null, null, null, null);
 
         while (cursor.moveToNext()) {
@@ -140,16 +183,52 @@ public class SQLHelper extends SQLiteOpenHelper {
                 , null, null, null, null);
         if (cursor!=null&&cursor.getColumnCount()!=0){
             while (cursor.moveToNext()) {
-//            String id = cursor.getString(cursor.getColumnIndex("id"));
-                String username = cursor.getString(cursor.getColumnIndex("username"));
-                int id = cursor.getInt(cursor.getColumnIndex("id"));
-                String password = cursor.getString(cursor.getColumnIndex("password"));
+                int id = cursor.getInt(cursor.getColumnIndex(ID));
+                String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+                String password = cursor.getString(cursor.getColumnIndex(PASSWORD));
 //            String date = cursor.getString(cursor.getColumnIndex("date"));
                 users.add(new User(id,username,password));
             }
         }
         closeDB();
         return users;
+    }
+    public List<Comment> getALlComment(int id_video){
+        List<Comment> comments = new ArrayList<>();
+        sqLiteDatabase = getReadableDatabase();
+        cursor = sqLiteDatabase.query(false, DB_COMMENT_TABLE, null, null, null
+                , null, null, null, null);
+        if (cursor!=null&&cursor.getColumnCount()!=0){
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(ID));
+                int user_id = cursor.getInt(cursor.getColumnIndex(USER_ID));
+                int video_id = cursor.getInt(cursor.getColumnIndex(VIDEO_ID));
+                String username = cursor.getString(cursor.getColumnIndex(USERNAME));
+                String content = cursor.getString(cursor.getColumnIndex(CONTENT));
+                if (video_id == id_video) comments.add(new Comment(id,user_id,video_id,username,content));
+            }
+        }
+        closeDB();
+        return comments;
+    }
+    public List<FavoriteVideo> getALlFavorite(int id_user){
+        List<FavoriteVideo> videos = new ArrayList<>();
+        sqLiteDatabase = getReadableDatabase();
+        cursor = sqLiteDatabase.query(false, DB_FAVORITE_TABLE, null, null, null
+                , null, null, null, null);
+        if (cursor!=null&&cursor.getColumnCount()!=0){
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex(ID));
+                int user_id = cursor.getInt(cursor.getColumnIndex(USER_ID));
+                int video_id = cursor.getInt(cursor.getColumnIndex(VIDEO_ID));
+                String title = cursor.getString(cursor.getColumnIndex(TITLE));
+                String avatar = cursor.getString(cursor.getColumnIndex(AVATAR));
+                String file_mp4 = cursor.getString(cursor.getColumnIndex(FILE_MP4));
+                if (user_id == id_user)videos.add(new FavoriteVideo(id,user_id,video_id,title,avatar,file_mp4));
+            }
+        }
+        closeDB();
+        return videos;
     }
 
     private void closeDB() {

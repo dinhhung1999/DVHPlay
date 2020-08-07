@@ -2,8 +2,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
+    android:background="@drawable/background_item_comment"
     android:layout_width="match_parent"
-    android:layout_margin="@dimen/_7sdp"
+    android:layout_marginLeft="@dimen/_7sdp"
+    android:layout_marginRight="@dimen/_7sdp"
+    android:layout_marginBottom="@dimen/_7sdp"
     android:gravity="center_vertical"
     android:layout_height="wrap_content">
     <ImageView
@@ -13,11 +16,13 @@
         android:layout_height="@dimen/_15sdp"/>
     <LinearLayout
         android:orientation="vertical"
+        android:layout_margin="@dimen/_7sdp"
+
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Hùng"
+            android:text="adsad"
             android:id="@+id/tvUserName"
             android:textSize="@dimen/_12sdp"
             android:textColor="@color/colorWhite"
@@ -25,14 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:text="Phim rất hay"
+            android:text="sdsas"
             android:id="@+id/tvComment"
-            android:textColor="@color/colorBackgroundDefaul"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="• 1 giờ trước"
-            android:id="@+id/tvtimeComment"
             android:textColor="@color/colorBackgroundDefaul"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

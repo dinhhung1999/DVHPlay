@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.dvhplay.Models.Comment;
 import com.example.dvhplay.R;
 import com.example.dvhplay.video.AdapterVideo;
 
@@ -14,9 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHoder> {
-    List<ItemComment> commentList;
+    List<Comment> commentList;
 
-    public AdapterComment(List<ItemComment> commentList) {
+    public AdapterComment(List<Comment> commentList) {
         this.commentList = commentList;
     }
 
@@ -31,9 +32,9 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHode
 
     @Override
     public void onBindViewHolder(@NonNull AdapterComment.ViewHoder holder, int position) {
-        ItemComment comment = commentList.get(position);
-        holder.tvUserName.setText(comment.getUserName());
-        holder.tvComment.setText(comment.getComment());
+        Comment comment = commentList.get(position);
+        holder.tvUserName.setText(comment.getUsername());
+        holder.tvComment.setText(comment.getContent());
     }
 
     @Override
@@ -42,8 +43,7 @@ public class AdapterComment extends RecyclerView.Adapter<AdapterComment.ViewHode
     }
 
     public class ViewHoder extends RecyclerView.ViewHolder {
-        TextView tvUserName;
-        TextView tvComment;
+        TextView tvUserName, tvComment;
         public ViewHoder(@NonNull View itemView) {
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tvUserName);

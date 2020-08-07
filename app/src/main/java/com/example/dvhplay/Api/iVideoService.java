@@ -1,6 +1,6 @@
 package com.example.dvhplay.Api;
 
-import com.example.dvhplay.video.VideoUlti;
+import com.example.dvhplay.Models.VideoUlti;
 
 import java.util.List;
 

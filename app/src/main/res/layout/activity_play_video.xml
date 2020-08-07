@@ -191,6 +191,7 @@
                     android:layout_width="@dimen/_150sdp"
                     android:layout_height="wrap_content"/>
                 <LinearLayout
+                    android:id="@+id/llCommentAndFavortie"
                     android:gravity="right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -270,15 +271,30 @@
                                 android:layout_margin="@dimen/_7sdp"
                                 android:layout_width="@dimen/_15sdp"
                                 android:layout_height="@dimen/_15sdp"/>
-                            <EditText
-                                android:hint="@string/etHint"
-                                android:maxLines="1"
-                                android:background="@drawable/backgpund_edittext_comment"
+                            <RelativeLayout
                                 android:layout_margin="@dimen/_7sdp"
-                                android:paddingLeft="@dimen/_10sdp"
-                                android:gravity="center_vertical"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_30sdp"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+                                <EditText
+                                    android:id="@+id/etComment"
+                                    android:hint="@string/etHint"
+                                    android:background="@drawable/backgound_coment"
+                                    android:maxLines="1"
+                                    android:paddingLeft="@dimen/_10sdp"
+                                    android:paddingRight="@dimen/_10sdp"
+                                    android:gravity="center_vertical"
+                                    android:layout_width="@dimen/_220sdp"
+                                    android:maxLength="22"
+                                    android:layout_height="@dimen/_30sdp"/>
+                                <ImageView
+                                    android:id="@+id/imSend"
+                                    android:src="@drawable/ic_round_send_24"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_width="@dimen/_25sdp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:layout_height="@dimen/_25sdp"/>
+                            </RelativeLayout>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="wrap_content"

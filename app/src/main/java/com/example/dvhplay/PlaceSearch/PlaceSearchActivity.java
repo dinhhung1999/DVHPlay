@@ -32,9 +32,8 @@ import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.ActivityPlaceSearchBinding;
 import com.example.dvhplay.helper.SQLHelper;
-import com.example.dvhplay.home.sliderImage.SliderImageAdapter;
 import com.example.dvhplay.video.AdapterVideo;
-import com.example.dvhplay.video.VideoUlti;
+import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
 
 import java.io.Serializable;
@@ -47,8 +46,8 @@ public class PlaceSearchActivity extends AppCompatActivity {
     private static final String TAG = "PlacesListSearchActivity";
     SQLHelper sqlHelper;
     public ArrayAdapter adapter;
-    ArrayList listHistorySearch = new ArrayList();
-    ArrayList lastHistorySearch ;
+    List <SearchHistory> listHistorySearch;
+    List <SearchHistory> lastHistorySearch ;
     com.example.dvhplay.Api.APIUtils APIUtils = new APIUtils();
     AdapterVideo adapterVideo;
     iVideoService videoService;
@@ -61,6 +60,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_place_search);
         sqlHelper = new SQLHelper(getBaseContext());
+        listHistorySearch = new ArrayList<>();
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -98,7 +98,6 @@ public class PlaceSearchActivity extends AppCompatActivity {
                 }
                 sqlHelper.insertHistory(query);
                 getHistory();
-                adapter.notifyDataSetChanged();
                 return false;
             }
             @Override
@@ -106,7 +105,6 @@ public class PlaceSearchActivity extends AppCompatActivity {
                     listSearch = new ArrayList<>();
                     for (VideoUlti v : videoUltiList ) {
                         if (v.getTitle().toLowerCase().contains(newText.toLowerCase())) {
-
                             listSearch.add(v);
                         }
                     }
@@ -211,15 +209,15 @@ public class PlaceSearchActivity extends AppCompatActivity {
         }
     };
     public void getHistory(){
-        if (listHistorySearch.size()!=0) {
+        listHistorySearch = sqlHelper.getAllHistoryAdvanced();
+        if (listHistorySearch.size()>0) {
             lastHistorySearch = new ArrayList();
-            listHistorySearch = (ArrayList) sqlHelper.getAllHistoryAdvanced();
             int i =0;
             do {
                 lastHistorySearch.add(listHistorySearch.get(listHistorySearch.size()-1-i));
                 i++;
-            } while (i<=9);
-            adapter = new ArrayAdapter<String>(getBaseContext(),
+            } while ( i<=9 && listHistorySearch.size()>i);
+            adapter = new ArrayAdapter<SearchHistory>(getBaseContext(),
                     android.R.layout.simple_dropdown_item_1line, lastHistorySearch);
             binding.listHistory.setAdapter(adapter);
         }

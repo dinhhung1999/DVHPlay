@@ -1,4 +1,4 @@
-package com.example.dvhplay.video;
+package com.example.dvhplay.Models;
 
 import java.io.Serializable;
 
@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class VideoUlti implements Serializable {
     @SerializedName("id")
     @Expose
-    String id;
+    int id;
     @SerializedName("category")
     @Expose
     String category;
@@ -58,7 +58,7 @@ public class VideoUlti implements Serializable {
     @Expose
     String nation;
 
-    public VideoUlti(String id, String category, String classify, String category_id, String provider_id, String title, String avatar, String artist_name, String file_mp4, String file_mp4_size, String date_created, String date_modified, String date_published, String episode, String synopsis, String video_duration, String nation) {
+    public VideoUlti(int id, String category, String classify, String category_id, String provider_id, String title, String avatar, String artist_name, String file_mp4, String file_mp4_size, String date_created, String date_modified, String date_published, String episode, String synopsis, String video_duration, String nation) {
         this.id = id;
         this.category = category;
         this.classify = classify;
@@ -78,11 +78,11 @@ public class VideoUlti implements Serializable {
         this.nation = nation;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -23,7 +23,7 @@ import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.FragmentMovieBinding;
 import com.example.dvhplay.video.AdapterVideo;
-import com.example.dvhplay.video.VideoUlti;
+import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.video.iItemOnClickVideo;
 
 import java.io.Serializable;

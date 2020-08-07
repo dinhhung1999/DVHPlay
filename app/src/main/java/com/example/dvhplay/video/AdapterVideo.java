@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.R;
 
 import java.util.List;

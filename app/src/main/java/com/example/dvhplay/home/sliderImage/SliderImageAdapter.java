@@ -1,6 +1,5 @@
 package com.example.dvhplay.home.sliderImage;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.dvhplay.R;
-import com.example.dvhplay.video.VideoUlti;
+import com.example.dvhplay.Models.VideoUlti;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
 import java.util.ArrayList;
