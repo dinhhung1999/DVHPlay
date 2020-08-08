@@ -6,6 +6,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -75,11 +77,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home,container,false);
-        listAds.add("Quận Cầu Giấy: DevPro đào tạo lập trình số 1 tại Hà Nội");
-        listAds.add("Quận Đống Đa: Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
+        listAds.add("DevPro đào tạo lập trình số 1 tại Hà Nội");
+        listAds.add("Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
         listAds.add("KFC Nguyễn Trãi: Giá Siêu Khủng - chỉ 18k/1 miếng gà đã trở lại!");
-        listAds.add("Quận Hà Đông: Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
-        listAds.add("Quận Thanh Xuân: Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
+        listAds.add("Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
+        listAds.add("Trường Đại học Thủy lợi tuyển sinh 2020 - Đón đầu xu thế");
         listDisttrict.add("Cầu Giấy");
         listDisttrict.add("Đống Đa");
         listDisttrict.add("Từ Liêm");
@@ -121,7 +123,7 @@ public class HomeFragment extends Fragment {
                     binding.imageSilde.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
                     binding.imageSilde.setIndicatorSelectedColor(Color.WHITE);
                     binding.imageSilde.setIndicatorUnselectedColor(Color.GRAY);
-                    binding.imageSilde.setIndicatorMarginCustom(0,0,0,450);
+                    binding.imageSilde.setIndicatorMarginCustom(10,20,30,450);
                     binding.imageSilde.setScrollTimeInSec(3);
                     binding.imageSilde.setAutoCycle(true);
                     binding.imageSilde.startAutoCycle();

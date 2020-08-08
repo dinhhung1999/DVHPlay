@@ -3,10 +3,13 @@ package com.example.dvhplay.myMedia;
 import java.io.Serializable;
 
 public class VideoInDevice implements Serializable {
-    String path;
+     String path = null;
 
-    public VideoInDevice(String path) {
+     String name = null;
+
+    public VideoInDevice(String path, String name) {
         this.path = path;
+        this.name = name;
     }
 
     public String getPath() {
@@ -15,5 +18,9 @@ public class VideoInDevice implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getName() {
+        return name;
     }
 }

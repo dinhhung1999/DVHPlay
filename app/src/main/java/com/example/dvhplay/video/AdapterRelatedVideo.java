@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.R;
+import com.example.dvhplay.helper.ScaleTouchListener;
 import com.romainpiel.shimmer.Shimmer;
 import com.romainpiel.shimmer.ShimmerTextView;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -24,6 +25,8 @@ public class AdapterRelatedVideo extends RecyclerView.Adapter<AdapterRelatedVide
     List<VideoUlti> videoUltiList;
     iItemOnClickVideo iItemOnClickVideo;
     Shimmer shimmer;
+    ScaleTouchListener itemViewListner;
+    ScaleTouchListener.Config config;
 
     public AdapterRelatedVideo(List<VideoUlti> videoUltiList) {
         this.videoUltiList = videoUltiList;
@@ -47,12 +50,15 @@ public class AdapterRelatedVideo extends RecyclerView.Adapter<AdapterRelatedVide
         holder.tvTitle.setText(videoUlti.getTitle());
         holder.tvTimeDate.setText(videoUlti.getDate_published());
         Glide.with(holder.imAvatar).load(videoUlti.getAvatar()).into(holder.imAvatar);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        config = new ScaleTouchListener.Config(100,0.90f,0.5f);
+        itemViewListner = new ScaleTouchListener(config){
             @Override
             public void onClick(View v) {
+                super.onClick(v);
                 iItemOnClickVideo.setItemOnClickVideo(videoUlti, holder.getLayoutPosition());
             }
-        });
+        };
+        holder.itemView.setOnTouchListener(itemViewListner);
         if (position == 0) {
             holder.rlVideo.setVisibility(View.VISIBLE);
             holder.itemView.setClickable(false);

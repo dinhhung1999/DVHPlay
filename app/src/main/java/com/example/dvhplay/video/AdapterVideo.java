@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.R;
+import com.example.dvhplay.helper.ScaleTouchListener;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.ViewHoder> {
     List<VideoUlti> videoUltiList;
     iItemOnClickVideo iItemOnClickVideo;
+    ScaleTouchListener itemViewListner;
+    ScaleTouchListener.Config config;
 
     public AdapterVideo(List<VideoUlti> videoUltiList) {
         this.videoUltiList = videoUltiList;
@@ -40,12 +43,15 @@ public class AdapterVideo extends RecyclerView.Adapter<AdapterVideo.ViewHoder> {
         final VideoUlti videoUlti = videoUltiList.get(position);
         holder.tvTitle.setText(videoUlti.getTitle());
         Glide.with(holder.imAvatar).load(videoUlti.getAvatar()).into(holder.imAvatar);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                iItemOnClickVideo.setItemOnClickVideo(videoUlti, holder.getLayoutPosition());
-            }
-        });
+        config = new ScaleTouchListener.Config(100,0.90f,0.5f);
+        itemViewListner = new ScaleTouchListener(config){
+                    @Override
+                    public void onClick(View v) {
+                        super.onClick(v);
+                        iItemOnClickVideo.setItemOnClickVideo(videoUlti, holder.getLayoutPosition());
+                    }
+                };
+        holder.itemView.setOnTouchListener(itemViewListner);
     }
 
     @Override

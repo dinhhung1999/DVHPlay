@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">DVH Play</string>
 
@@ -8,7 +9,6 @@
     <string name="message_dialog">Turn on network connection</string>
     <string name="retry">Retry</string>
     <string name="exit">Exit</string>
-    <string name="back">Press back twice to exit the application!</string>
     //bottom menu
     <string name="title_home">Home</string>
     <string name="title_film">Category</string>
@@ -52,7 +52,7 @@
 
 
     // login
-    <string name="titleLogin">We always want to bring you a great experience</string>
+    <string name="titleLogin">We pursue a relaxed watching movie experience</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -74,7 +74,7 @@
     <string name="hasSymbol">Password must contain at least 1 symbol</string>
     <string name="registerSuccess">Register success</string>
     <string name="loginSuccess">Login success</string>
-    <string name="wellcome"></string>
+    <string name="wellcome">Wellcome</string>
     <string name="featureDevelopment">Features are under development</string>
 
     //More fragment

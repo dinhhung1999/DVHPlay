@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DVH Play</string>
+
+    //MAIN
+    <string name="message_request_permission_read_phone_state">Chúng tôi cần được cấp quyền để tiếp tục</string>
+    <string name="tilte_dialog_check_network">Không có kết nối mạng</string>
+    <string name="OK">Đồng ý</string>
+    <string name="message_dialog">Bật kết nối mạng</string>
+    <string name="retry">Thử lại</string>
+    <string name="exit">Thoái</string>
+    <string name="back">Nhấn back 2 lần để thoát ứng dụng!</string>
+    //bottom menu
+    <string name="title_home">Trang chủ</string>
+    <string name="title_film">Thể loại</string>
+    <string name="title_TV" translatable="false">TV</string>
+    <string name="title_my_media">Video của tôi</string>
+    <string name="title_more">Thêm</string>
+
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+
+    //Home
+    <string name="proposed">Đề xuất</string>
+    <string name="synthetic">Tổng hợp</string>
+    <string name="All">Tất cả</string>
+    <string name="hotVideo">Video nổi bật</string>
+
+    // bottom video
+    <string name="follow">Yêu thích</string>
+    <string name="unfollow">Hủy yêu thích</string>
+    <string name="comment">Bình luận</string>
+    <string name="hidecomment">Ẩn bình luận</string>
+    <string name="relatedContent">Video liên quan</string>
+    <string name="isPlaying">ĐANG PHÁT</string>
+    // comment film
+    <string name="etHint">Bình luận</string>
+
+    // film fragment
+    <string name="TV_serie">Âm nhạc</string>
+    <string name="movie">Phim</string>
+    <string name="anime">Anime</string>
+    <string name="sport">Thể thao</string>
+
+    <string name="iTemToolbarTitleSearch">Tìm kiếm</string>
+
+    // PlayVideoActivity
+    <string name="checkNetworkPlayVideo">Không có kết nối mạng, vui lòng thử lại</string>
+    // Search view
+    <string name="seachhint">Tìm kiếm video</string>
+    <string name="noMatchFound">Không tìm thấy Kết quả phù hợp</string>
+    <string name="searchHistory">Lịch sử tìm kiếm</string>
+    <string name="searchResults">Kết quả tìm kiếm</string>
+
+
+    // login
+    <string name="titleLogin">Chúng tôi luôn mong muốn đem lại những trải nghiệm tuyệt vời cho bạn</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="signup">Đăng ký</string>
+    <string name="action_sign_in">Đăng nhập</string>
+    <string name="invalid_username">Tên đăng nhập không hợp lệ</string>
+    <string name="invalid_email">Không phải là một địa chỉ e-mail hợp lệ</string>
+    <string name="username_empty">Tên đăng nhập không được để trống</string>
+    <string name="invalid_password">Mật khẩu phải có trên 6 ký tự</string>
+    <string name="incorrectPassword">Mật khẩu không đúng</string>
+    <string name="login_failed">"Đăng nhập không thành công"</string>
+    <string name="forgotPassword">"Quên mật khẩu?"</string>
+    <string name="usernameAvailable">Email đã tồn tại</string>
+    <string name="usernameNotExist">Tên đăng nhập không tồn tại</string>
+    <string name="hasSpaces">Mật khẩu không được chứa khoảng trống</string>
+    <string name="hasUpper">Mật khẩu phải có 1 ký tự viết hoa</string>
+    <string name="hasLower">Mật khẩu phải có 1 ký tự viết thường</string>
+    <string name="hasNumber">Mật khẩu phải có 1 chữ số</string>
+    <string name="hasSymbol">Mật khẩu phải có 1 ký tự đặc biệt</string>
+    <string name="registerSuccess">Đăng ký thành công</string>
+    <string name="loginSuccess">Đăng nhập thành công</string>
+    <string name="wellcome">Chào mừng</string>
+    <string name="featureDevelopment">Tính năng đang phát triển</string>
+
+    //More fragment
+    <string name="hello">Xin chào !</string>
+    <string name="listFavorie">Danh sách video yêu thích</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="cancel">Hủy</string>
+    <string name="confirmLogout">Bạn có chắc chắn muốn đăng xuất?</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="english">Tiếng Anh</string>
+    <string name="vietnam">Tiếng Việt</string>
+</resources>

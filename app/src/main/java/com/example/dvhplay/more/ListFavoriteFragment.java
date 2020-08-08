@@ -43,7 +43,7 @@ public class ListFavoriteFragment extends Fragment {
         user_id = sharePreference.getIntValue("user_id",0);
         favoriteVideos = new ArrayList<>();
         favoriteVideos = sqlHelper.getALlFavorite(user_id);
-        binding.tvListReuslts.setText(getText(R.string.listFavorie)+" :"+favoriteVideos.size());
+        binding.tvListReuslts.setText(getText(R.string.listFavorie)+": "+favoriteVideos.size());
         if (favoriteVideos.size()!=0){
             adapterListFavorite = new AdapterListFavorite(favoriteVideos);
             adapterListFavorite.setiItemOnClickVideo(new iItemOnClickVideo() {

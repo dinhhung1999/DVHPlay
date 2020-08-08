@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.dvhplay.Models.VideoUlti;
 import com.example.dvhplay.R;
+import com.example.dvhplay.helper.ScaleTouchListener;
 import com.example.dvhplay.video.iItemOnClickVideo;
 
 import java.util.List;
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AdapterListFavorite extends RecyclerView.Adapter<AdapterListFavorite.ViewHoder> {
     List<VideoUlti> favoriteVideos;
     iItemOnClickVideo iItemOnClickVideo;
+    ScaleTouchListener itemViewListner;
+    ScaleTouchListener.Config config;
     public AdapterListFavorite(List<VideoUlti> favoriteVideos) {
         this.favoriteVideos = favoriteVideos;
     }
@@ -41,12 +44,15 @@ public class AdapterListFavorite extends RecyclerView.Adapter<AdapterListFavorit
         final VideoUlti favoriteVideo = favoriteVideos.get(position);
         holder.tvTitle.setText(favoriteVideo.getTitle());
         Glide.with(holder.imAvatar).load(favoriteVideo.getAvatar()).into(holder.imAvatar);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        config = new ScaleTouchListener.Config(100,0.90f,0.5f);
+        itemViewListner = new ScaleTouchListener(config){
             @Override
             public void onClick(View v) {
-                iItemOnClickVideo.setItemOnClickVideo(favoriteVideo,holder.getLayoutPosition());
+                super.onClick(v);
+                iItemOnClickVideo.setItemOnClickVideo(favoriteVideo, holder.getLayoutPosition());
             }
-        });
+        };
+        holder.itemView.setOnTouchListener(itemViewListner);
     }
 
     @Override

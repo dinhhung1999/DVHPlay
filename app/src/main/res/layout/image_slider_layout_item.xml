@@ -6,7 +6,7 @@
         android:id="@+id/iv_image_slider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"/>
+        android:scaleType="centerCrop"/>
     <FrameLayout
         android:id="@+id/fl_shadow_container"
         android:background="@drawable/background_overlay"

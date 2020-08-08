@@ -6,8 +6,14 @@ import androidx.databinding.DataBindingUtil;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +24,7 @@ import com.example.dvhplay.Models.User;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.ActivityLoginBinding;
 import com.example.dvhplay.helper.SQLHelper;
+import com.example.dvhplay.helper.ScaleTouchListener;
 import com.example.dvhplay.helper.VFMSharePreference;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -27,15 +34,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-
+    String username ="";
+    String password ="";
     final String MD5 = "MD5";
-    final int  LOGINACTIVITY = 1999;
+    final int LOGINACTIVITY = 1999;
     ActivityLoginBinding binding;
     LoginViewListener listener = new LoginViewListener();
     SQLHelper sqlHelper;
     PasswordUtil passwordUtil;
     List<User> users = new ArrayList<>();
     VFMSharePreference sharePreference;
+    ScaleTouchListener btnLoginListener,btnSignUpListener;
+    ScaleTouchListener.Config config;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,46 +53,28 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         binding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+
         if (!checkRequiredPermissions()) checkRequiredPermissions();
         passwordUtil = new PasswordUtil();
         sqlHelper = new SQLHelper(getBaseContext());
         sharePreference = new VFMSharePreference(this);
-        String username = sharePreference.getStringValue("username");
-        String password = sharePreference.getStringValue("password");
+        username = sharePreference.getStringValue("username");
+        password = sharePreference.getStringValue("password");
         if (username.length()!=0) binding.etEmail.setText(username);
         if (password.length()!=0) {
             binding.etPass.setText(password);
             if (sqlHelper.getAllUser().size()!=0) users = sqlHelper.getAllUser();
             for (int i =0; i<users.size();i++) {
                 if (md5(password).equals(users.get(i).getPassword())) {
-                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
                     sharePreference.putStringValue("username", users.get(i).getUsername());
                     sharePreference.putStringValue("password", password);
                     sharePreference.putIntValue("user_id", users.get(i).getId());
-                    startActivity(intent);
+                    binding.llForm.setVisibility(View.GONE);
+                    login();
                 }
             }
         }
-        binding.btnSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.user.setError(null);
-                binding.user.setErrorEnabled(false);
-                binding.pass.setError(null);
-                binding.pass.setErrorEnabled(false);
-                listener.onLogin(binding.user,binding.pass);
-            }
-        });
-        binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.user.setError(null);
-                binding.user.setErrorEnabled(false);
-                binding.pass.setError(null);
-                binding.pass.setErrorEnabled(false);
-                listener.onRegister(binding.user,binding.pass);
-            }
-        });
+        setupViews();
         binding.tvForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                             if (loginUser.getEditText().getText().toString().equals(users.get(i).getUsername())) {
                                 if (md5(loginPass.getEditText().getText().toString()).equals(users.get(i).getPassword())) {
                                     Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                                    Toast.makeText(getBaseContext(),getText(R.string.loginSuccess)+" \n"+" "+users.get(i).getUsername(),Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(),getText(R.string.loginSuccess)+" \n"+ getText(R.string.wellcome)+" "+users.get(i).getUsername(),Toast.LENGTH_SHORT).show();
                                     sharePreference.putStringValue("username",users.get(i).getUsername());
                                     sharePreference.putStringValue("password", loginPass.getEditText().getText().toString());
                                     sharePreference.putIntValue("user_id",users.get(i).getId());
@@ -229,5 +221,42 @@ public class LoginActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // Forward results to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+    public void setupViews() {
+        config = new ScaleTouchListener.Config(100,0.90f,0.5f);
+        btnLoginListener = new ScaleTouchListener(config){
+            @Override
+            public void onClick(View view) {
+                super.onClick(view);
+                binding.user.setError(null);
+                binding.user.setErrorEnabled(false);
+                binding.pass.setError(null);
+                binding.pass.setErrorEnabled(false);
+                listener.onLogin(binding.user,binding.pass);
+            }
+        };
+        btnSignUpListener = new ScaleTouchListener(config){
+            @Override
+            public void onClick(View view) {
+                super.onClick(view);
+                binding.user.setError(null);
+                binding.user.setErrorEnabled(false);
+                binding.pass.setError(null);
+                binding.pass.setErrorEnabled(false);
+                listener.onRegister(binding.user,binding.pass);
+            }
+        };
+        binding.btnSignIn.setOnTouchListener(btnLoginListener);
+        binding.btnSignUp.setOnTouchListener(btnSignUpListener);
+    }
+    public void login(){
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            @Override
+            public void run(){
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        }, 1000);
     }
 }

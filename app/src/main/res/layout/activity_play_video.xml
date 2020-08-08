@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
+        android:background="@drawable/bgplayvideo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -178,7 +179,6 @@
             </RelativeLayout>
             <LinearLayout
                 android:id="@+id/llBottomVideo"
-                android:background="@color/colorBackground"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -246,7 +246,6 @@
                 </LinearLayout>
             </LinearLayout>
             <androidx.core.widget.NestedScrollView
-                android:background="@color/colorBackground"
                 android:id="@+id/svBottom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

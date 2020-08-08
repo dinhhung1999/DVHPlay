@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@drawable/bgsports"
         android:layout_height="match_parent">
         <ProgressBar
             android:id="@+id/prBar"
@@ -9,6 +10,7 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_7sdp"
             android:id="@+id/rvSport"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.core.widget.NestedScrollView
+        android:background="@drawable/bgplayvideo"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
@@ -19,11 +20,9 @@
                 android:layout_height="match_parent">
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_slider"
-                    android:background="@color/colorBackground"
                     android:visibility="gone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="@dimen/_12sdp">
+                    android:layout_height="wrap_content">
                     <com.smarteist.autoimageslider.SliderView
                         android:id="@+id/imageSilde"
                         android:layout_width="match_parent"

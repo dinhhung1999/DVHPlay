@@ -8,28 +8,29 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabLayoutTop"
-                android:background="@color/colorPrimaryDark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tiTvSerie"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tiMovie"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tiAnime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <com.google.android.material.tabs.TabItem
-                    android:id="@+id/tiSport"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.tabs.TabLayout>
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayoutTop"
+                    android:background="@drawable/bgtabbar"
+                    android:fitsSystemWindows="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tiTvSerie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tiMovie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tiAnime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                    <com.google.android.material.tabs.TabItem
+                        android:id="@+id/tiSport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.tabs.TabLayout>
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/vpFilm"
                 android:layout_width="match_parent"

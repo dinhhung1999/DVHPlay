@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
+        android:background="@drawable/bganime2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ProgressBar
@@ -9,6 +10,7 @@
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_7sdp"
             android:id="@+id/rvAnime"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

@@ -13,6 +13,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.example.dvhplay.PlayVideo.PlayVideoActivity;
 import com.example.dvhplay.R;
 import com.example.dvhplay.databinding.ActivityPlaceSearchBinding;
 import com.example.dvhplay.helper.SQLHelper;
+import com.example.dvhplay.helper.ScaleTouchListener;
 import com.example.dvhplay.helper.VFMSharePreference;
 import com.example.dvhplay.video.AdapterVideo;
 import com.example.dvhplay.Models.VideoUlti;
@@ -71,6 +73,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setCustomView(R.layout.search_view_layout);
+        actionBar.setBackgroundDrawable(getDrawable(R.drawable.bgactionbar));
         searchView = actionBar.getCustomView().findViewById(R.id.svSearch);
         getVideosList();
         runnable.run();
@@ -94,6 +97,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
                             intent.putExtra("video", (Serializable) videoUlti);
                             intent.putExtra("videoUtilList", (Serializable) listSearch);
                             intent.putExtra("position", position);
+                            sqlHelper.insertHistory(user_id,videoUlti.getTitle());
                             startActivity(intent);
                         }
                     });
@@ -201,12 +205,16 @@ public class PlaceSearchActivity extends AppCompatActivity {
         });
     }
     private Runnable runnable = new Runnable() {
+        @SuppressLint("ResourceAsColor")
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void run() {
             if (searchView.getQuery().toString().trim().length()!=0){
+                binding.rlSearch.setBackground(getDrawable(R.drawable.bgplayvideo));
                 binding.llResults.setVisibility(View.VISIBLE);
                 binding.llHistory.setVisibility(View.GONE);
             } else {
+                binding.rlSearch.setBackgroundColor(getResources().getColor(R.color.colorBackgroundDefaul));
                 binding.llResults.setVisibility(View.GONE);
                 binding.llHistory.setVisibility(View.VISIBLE);
             }

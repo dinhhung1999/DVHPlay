@@ -34,6 +34,7 @@ import com.example.dvhplay.ServiceAndBroadcast.ServiceNotification;
 import com.example.dvhplay.databinding.ActivityPlayVideoBinding;
 import com.example.dvhplay.helper.CheckNetwork;
 import com.example.dvhplay.helper.SQLHelper;
+import com.example.dvhplay.helper.ScaleTouchListener;
 import com.example.dvhplay.helper.VFMSharePreference;
 import com.example.dvhplay.video.AdapterRelatedVideo;
 import com.example.dvhplay.Models.VideoUlti;
@@ -44,6 +45,8 @@ import java.util.List;
 
 public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "PlayVideoActivity";
+    ScaleTouchListener llFavoriteListner,llCommentListner, imSendListner;
+    ScaleTouchListener.Config config;
     SQLHelper sqlHelper;
     List<Comment> comments;
     List<Comment> lastComments;
@@ -67,10 +70,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
 
     // kiểm tra có khóa không
     private boolean isLock = false;
-
-    //độ nhạy trượt
-    private static final double SLIP_SENSITIVITY = 0.88;
-
 
     // code tăng giảm
     private final static int ADD_FLAG = 1;
@@ -102,16 +101,12 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     // Kiểm tra full màn hình
     boolean fullscreen = false;
 
-    // kiểm tra controller ẩn hiện
-    private static boolean isShow = false;
 
     // Tổng thời gian video
     private long mVideoTotalTime = 0;
 
     // Kiểm tra có đang tua video không
 
-    // Có dừng tiến trình không
-    private boolean mIsFastFinish = false;
 
     // Âm lượng tối đa, tối thiểu của video
     private int mMaxVolume;
@@ -307,10 +302,12 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     binding.getRoot().setLayoutParams(params);
                     fullscreen = false;
                 } else {
-                        binding.vvPlayVideo.pause();
+                        binding.vvPlayVideo.stopPlayback();
                         sharePreference.remove("title");
-//                        finish();
-                    startActivity(new Intent(getBaseContext(), MainActivity.class));
+                        if (isVideoOnline) finish();
+                        else {
+                            startActivity(new Intent(getBaseContext(),MainActivity.class));
+                        }
                     }
             }
         });
@@ -394,44 +391,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 binding.vvPlayVideo.start();
             }
         });
-
-        binding.llFollow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!follow) {
-                    sqlHelper.insertFavorite(video.getId(),user_id,video.getTitle(),video.getAvatar(),video.getFile_mp4(),video.getDate_published());
-                    setFavoriteVideo();
-                } else {
-                    favoriteVideos = new ArrayList<>();
-                    favoriteVideos = sqlHelper.getALlFavorite(user_id);
-                    for (int i =0; i<favoriteVideos.size();i++){
-                        if (favoriteVideos.get(i).getUser_id() == user_id) sqlHelper.deleteFavorite(video.getId());
-                    }
-                    setUnFavoriteVideo();
-                }
-            }
-        });
-        binding.llComment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(hideComment) {
-                    selectComment();
-                    setVisibleComment();
-                } else {
-                    setHideComment();
-                }
-            }
-        });
-        binding.imSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (binding.etComment.getText().toString().trim().length()!=0){
-                    sqlHelper.insertComment(user_id,video.getId(),username,binding.etComment.getText().toString().trim());
-                    binding.etComment.setText("");
-                    selectComment();
-                }
-            }
-        });
+        setupViews();
         getRelatedVideo();
         binding.imSkipNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -447,6 +407,53 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 changeVideo();
             }
         });
+    }
+    public void setupViews(){
+        config = new ScaleTouchListener.Config(100,0.90f,0.5f);
+        llFavoriteListner = new ScaleTouchListener(config){
+            @Override
+            public void onClick(View v) {
+                super.onClick(v);
+                if(!follow) {
+                    sqlHelper.insertFavorite(video.getId(),user_id,video.getTitle(),video.getAvatar(),video.getFile_mp4(),video.getDate_published());
+                    setFavoriteVideo();
+                } else {
+                    favoriteVideos = new ArrayList<>();
+                    favoriteVideos = sqlHelper.getALlFavorite(user_id);
+                    for (int i =0; i<favoriteVideos.size();i++){
+                        if (favoriteVideos.get(i).getUser_id() == user_id) sqlHelper.deleteFavorite(video.getId());
+                    }
+                    setUnFavoriteVideo();
+                }
+            }
+        };
+        llCommentListner = new ScaleTouchListener(config){
+            @Override
+            public void onClick(View v) {
+                super.onClick(v);
+                if(hideComment) {
+                    selectComment();
+                    setVisibleComment();
+                } else {
+                    setHideComment();
+                    lastComments = new ArrayList<>();
+                }
+            }
+        };
+        imSendListner = new ScaleTouchListener(config){
+            @Override
+            public void onClick(View v) {
+                super.onClick(v);
+                if (binding.etComment.getText().toString().trim().length()!=0){
+                    sqlHelper.insertComment(user_id,video.getId(),username,binding.etComment.getText().toString().trim());
+                    binding.etComment.setText("");
+                    selectComment();
+                }
+            }
+        };
+        binding.llComment.setOnTouchListener(llCommentListner);
+        binding.llFollow.setOnTouchListener(llFavoriteListner);
+        binding.imSend.setOnTouchListener(imSendListner);
     }
     private void initOnjects() {
         binding.nbVideo.setOnSeekBarChangeListener(this);
@@ -475,7 +482,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
     private void updateProgreeBar() {
         handler.postDelayed(updateTimeTask, 0);
     }
-
     private Runnable updateTimeTask = new Runnable() {
         @Override
         public void run() {
@@ -509,7 +515,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             handler.postDelayed(this, 0);
         }
     };
-
     @Override
     public void onProgressChanged(SeekBar seekBar, int position, boolean isHold) {
         if (isHold) {
@@ -591,19 +596,8 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         } else {
             handler.removeCallbacks(makeHidden);
             setInvisibility();
-            isShow = false;
         }
     }
-//    public void onLoading(){
-//        if (!binding.vvPlayVideo.isPlaying() && binding.nbVideo.getProgress() <100 && isLoad )
-//        {
-//            binding.prBar.setVisibility(View.VISIBLE);
-//            binding.imPauseOrResume.setVisibility(View.INVISIBLE);
-//        }else {
-//            binding.prBar.setVisibility(View.GONE);
-//            binding.imPauseOrResume.setVisibility(View.VISIBLE);
-//        }
-//    }
     private int getScreenBrightness(){
         int screenBrightness = MAX_LIGHTNESS;
         try {
@@ -697,28 +691,6 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                 }
             }
         }
-    public void checkInternetWhilePlay() {
-        if (!checkNetwork.isNetworkConnected(getBaseContext()) || !checkNetwork.isInternetAvailable(getBaseContext())) {
-            AlertDialog alertDialog = new AlertDialog.Builder(PlayVideoActivity.this)
-                    .setCancelable(false)
-//                    .setTitle(R.string.tilte_dialog_check_network)
-                    .setMessage(R.string.checkNetworkPlayVideo)
-                    .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            startActivity(new Intent(getBaseContext(),PlayVideoActivity.class));
-                        }
-                    })
-                    .create();
-            alertDialog.show();
-        }
-    }
     public void setHideComment(){
         binding.imComment.setImageResource(R.drawable.ic_round_chat_24);
         binding.tvComment.setText(R.string.comment);
@@ -765,16 +737,21 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             if (comments.size()>0){
                 int i =0;
                 do {
-                    lastComments.add(comments.get(comments.size()-1-i));
+                    if (comments.get(i).getVideo_id() == video.getId() && comments.get(i).getUser_id() == user_id) lastComments.add(comments.get(comments.size()-1-i));
                     i++;
                 } while (i<3 && comments.size()>i);
-                binding.tvTotalComments.setText("("+comments.size()+")");
-                adapterComment = new AdapterComment(lastComments);
-                RecyclerView.LayoutManager layoutManagerComment = new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false);
-                binding.rvComment.setLayoutManager(layoutManagerComment);
-                binding.rvComment.setAdapter(adapterComment);
+                if (lastComments.size()>0){
+                    binding.rvComment.setVisibility(View.VISIBLE);
+                    adapterComment = new AdapterComment(lastComments);
+                    RecyclerView.LayoutManager layoutManagerComment = new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false);
+                    binding.rvComment.setLayoutManager(layoutManagerComment);
+                    binding.rvComment.setAdapter(adapterComment);
+                }
                 adapterComment.notifyDataSetChanged();
+            } else {
+                binding.rvComment.setVisibility(View.GONE);
             }
+            binding.tvTotalComments.setText("("+comments.size()+")");
         }
     }
     public void setFavoriteVideo(){
@@ -826,6 +803,21 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             binding.rvRelatedVideos.setAdapter(adapterVideo);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        binding.vvPlayVideo.stopPlayback();
+        sharePreference.remove("title");
+        if (isVideoOnline) super.onBackPressed();
+        else startActivity(new Intent(getBaseContext(),MainActivity.class));
+
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
