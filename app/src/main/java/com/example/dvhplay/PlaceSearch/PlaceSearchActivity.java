@@ -54,7 +54,7 @@ public class PlaceSearchActivity extends AppCompatActivity {
     com.example.dvhplay.Api.APIUtils APIUtils = new APIUtils();
     AdapterVideo adapterVideo;
     iVideoService videoService;
-    List<VideoUlti> videoUtilList1, videoUltiList2, listSearch, videoUltiList;
+    List<VideoUlti> videoUtilList1, videoUltiList2,videoUltiListAnime,videoUltiListSport, listSearch, videoUltiList;
     SearchView searchView;
     Handler handler = new Handler();
     VFMSharePreference sharePreference;
@@ -198,6 +198,68 @@ public class PlaceSearchActivity extends AppCompatActivity {
                     }
                 }
             }
+            @Override
+            public void onFailure(Call<List<VideoUlti>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+        Call<List<VideoUlti>> call3 = videoService.getAnime();
+        call3.enqueue(new Callback<List<VideoUlti>>() {
+            @Override
+            public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
+                if (response.isSuccessful()){
+                    videoUltiListAnime = new ArrayList<>();
+                    videoUltiListAnime = response.body();
+                    for (VideoUlti v : videoUltiListAnime) {
+                        videoUltiList.add(v);
+                    }
+                } else {
+                    int sc = response.code();
+                    switch (sc) {
+                        case 400:
+                            Log.e("Error 400", "Bad Request");
+                            break;
+                        case 404:
+                            Log.e("Error 404", "Not Found");
+                            break;
+                        default:
+                            Log.e("Error", "Generic Error");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<VideoUlti>> call, Throwable t) {
+                Log.e("ERROR: ", t.getMessage());
+            }
+        });
+        videoService = RetrofitClient.getRetrofitClient(APIUtils.getBASE_API()).create(iVideoService.class);
+        Call<List<VideoUlti>> call4 = videoService.getSport();
+        call4.enqueue(new Callback<List<VideoUlti>>() {
+            @Override
+            public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {
+                if (response.isSuccessful()){
+                    videoUltiListSport = new ArrayList<>();
+                    videoUltiListSport = response.body();
+                    for (VideoUlti v : videoUltiListSport) {
+                        videoUltiList.add(v);
+                    }
+
+                } else {
+                    int sc = response.code();
+                    switch (sc) {
+                        case 400:
+                            Log.e("Error 400", "Bad Request");
+                            break;
+                        case 404:
+                            Log.e("Error 404", "Not Found");
+                            break;
+                        default:
+                            Log.e("Error", "Generic Error");
+                    }
+                }
+            }
+
             @Override
             public void onFailure(Call<List<VideoUlti>> call, Throwable t) {
                 Log.e("ERROR: ", t.getMessage());
