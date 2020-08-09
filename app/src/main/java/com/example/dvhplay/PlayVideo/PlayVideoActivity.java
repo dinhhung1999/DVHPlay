@@ -652,7 +652,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
         binding.imMessage.setImageResource(R.drawable.ic_round_wb_sunny_24);
         binding.tvMessage.setText(String.format("%s%%",mShowLightness*100/255));
         WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.screenBrightness = 5;
+        lp.screenBrightness = mShowLightness / 255f;
         getWindow().setAttributes(lp);
         mHandler.removeMessages(SHOW_CENTER_CONTROL);
         binding.llMessage.setVisibility(View.VISIBLE);
