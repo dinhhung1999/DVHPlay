@@ -28,8 +28,8 @@
                     android:background="@color/colorBackgroundMessage"
                     android:layout_centerInParent="true"
                     android:orientation="vertical"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp">
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp">
                     <ImageView
                         android:id="@+id/imMessage"
                         android:layout_gravity="center"
