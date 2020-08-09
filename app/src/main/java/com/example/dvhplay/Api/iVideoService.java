@@ -30,4 +30,8 @@ public interface iVideoService   {
     Call<List<VideoUlti>> getVideo3();
     @GET("GetCategory")
     Call<List<VideoUlti>> getCategory();
+    @GET("getSports")
+    Call<List<VideoUlti>> getSport();
+    @GET("getAnime")
+    Call<List<VideoUlti>> getAnime();
 }

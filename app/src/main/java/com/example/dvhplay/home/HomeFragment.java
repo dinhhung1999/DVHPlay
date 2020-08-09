@@ -308,7 +308,7 @@ public class HomeFragment extends Fragment {
                 for (int i =listDisttrict.size()-1; i<listDisttrict.size();i++){
                     if (listDisttrict.get(i).trim().equalsIgnoreCase(district.trim())){
                         ads = listAds.get(i);
-                    } else ads = listAds.get(new Random().nextInt(listAds.size()));
+                    } else ads = listAds.get(0);
                 }
                 showAds();
             } else binding.rlAds.setVisibility(View.GONE);
@@ -330,6 +330,6 @@ public class HomeFragment extends Fragment {
                     shimmer = new Shimmer();
                     shimmer.start(binding.tvAds);
             }
-        }, 7000);
+        }, 4000);
     }
 }

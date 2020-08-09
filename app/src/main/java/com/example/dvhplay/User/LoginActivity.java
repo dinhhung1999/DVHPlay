@@ -74,7 +74,27 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }
-        setupViews();
+        binding.btnSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.user.setError(null);
+                binding.user.setErrorEnabled(false);
+                binding.pass.setError(null);
+                binding.pass.setErrorEnabled(false);
+                listener.onLogin(binding.user,binding.pass);
+            }
+        });
+        binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.user.setError(null);
+                binding.user.setErrorEnabled(false);
+                binding.pass.setError(null);
+                binding.pass.setErrorEnabled(false);
+                listener.onRegister(binding.user,binding.pass);
+            }
+        });
+//        setupViews();
         binding.tvForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +253,7 @@ public class LoginActivity extends AppCompatActivity {
                 binding.pass.setError(null);
                 binding.pass.setErrorEnabled(false);
                 listener.onLogin(binding.user,binding.pass);
+                return;
             }
         };
         btnSignUpListener = new ScaleTouchListener(config){
@@ -244,6 +265,7 @@ public class LoginActivity extends AppCompatActivity {
                 binding.pass.setError(null);
                 binding.pass.setErrorEnabled(false);
                 listener.onRegister(binding.user,binding.pass);
+                return;
             }
         };
         binding.btnSignIn.setOnTouchListener(btnLoginListener);

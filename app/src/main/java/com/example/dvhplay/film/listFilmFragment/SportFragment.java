@@ -52,7 +52,7 @@ public class SportFragment extends Fragment {
     }
     public void getVideosList(){
         videoService = RetrofitClient.getRetrofitClient(APIUtils.getBASE_API()).create(iVideoService.class);
-        Call<List<VideoUlti>> call = videoService.getVideo();
+        Call<List<VideoUlti>> call = videoService.getSport();
         call.enqueue(new Callback<List<VideoUlti>>() {
             @Override
             public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {

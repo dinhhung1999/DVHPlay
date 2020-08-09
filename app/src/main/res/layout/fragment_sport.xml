@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@drawable/bgsports"
+        android:background="@drawable/bgplayvideo"
         android:layout_height="match_parent">
         <ProgressBar
             android:id="@+id/prBar"

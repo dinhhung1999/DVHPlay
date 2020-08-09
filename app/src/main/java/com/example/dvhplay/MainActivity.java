@@ -108,13 +108,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 super.onClick(v);
+                actionBar.show();
                 setColorDefault();
                 binding.imHome.setImageResource(R.drawable.ic_round_home_24_if_click);
                 binding.tvHome.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
                 FLAG_FRAGMENT = 1;
                 CheckInternetInRefresh();
                 getFragment(HomeFragment.newInstance());
-                actionBar.show();
             }
         };
         llFilmListener = new ScaleTouchListener(config) {
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 super.onClick(v);
-                actionBar.hide();
+                actionBar.show();
                 setColorDefault();
                 binding.imTV.setImageResource(R.drawable.ic_round_tv_if_click_24);
                 binding.tvTV.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 super.onClick(v);
-                actionBar.hide();
+                actionBar.show();
                 setColorDefault();
                 binding.imMyMedia.setImageResource(R.drawable.ic_round_video_library_if_click_24);
                 binding.tvMyMedia.setTextColor(getResources().getColor(R.color.colorBackgroundMain));
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 super.onClick(v);
-                actionBar.hide();
+                actionBar.show();
                 setColorDefault();
                 binding.imMore.setImageResource(R.drawable.ic_round_more_horiz_24_ifclick);
                 binding.tvMore.setTextColor(getResources().getColor(R.color.colorBackgroundMain));

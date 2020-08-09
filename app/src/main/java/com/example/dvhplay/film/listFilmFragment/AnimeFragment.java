@@ -50,7 +50,7 @@ public class AnimeFragment extends Fragment {
     }
     public void getVideosList(){
         videoService = RetrofitClient.getRetrofitClient(APIUtils.getBASE_API()).create(iVideoService.class);
-        Call<List<VideoUlti>> call = videoService.getVideo2();
+        Call<List<VideoUlti>> call = videoService.getAnime();
         call.enqueue(new Callback<List<VideoUlti>>() {
             @Override
             public void onResponse(Call<List<VideoUlti>> call, Response<List<VideoUlti>> response) {

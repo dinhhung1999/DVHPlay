@@ -55,7 +55,7 @@ public class FilmFragment extends Fragment {
                 binding.tabLayoutTop.getTabAt(1).setText(R.string.movie);
                 binding.tabLayoutTop.getTabAt(2).setText(R.string.anime);
                 binding.tabLayoutTop.getTabAt(3).setText(R.string.sport);
-                binding.tabLayoutTop.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorPrimaryDark));
+                binding.tabLayoutTop.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorBackgroundMain));
 //            }
 //        });
         setAppBarHeight();
