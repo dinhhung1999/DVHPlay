@@ -746,12 +746,13 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
                     RecyclerView.LayoutManager layoutManagerComment = new LinearLayoutManager(getBaseContext(),RecyclerView.VERTICAL,false);
                     binding.rvComment.setLayoutManager(layoutManagerComment);
                     binding.rvComment.setAdapter(adapterComment);
+                    binding.tvTotalComments.setText("("+comments.size()+")");
+
                 }
-                adapterComment.notifyDataSetChanged();
             } else {
                 binding.rvComment.setVisibility(View.GONE);
+                binding.tvTotalComments.setText("(0)");
             }
-            binding.tvTotalComments.setText("("+comments.size()+")");
         }
     }
     public void setFavoriteVideo(){

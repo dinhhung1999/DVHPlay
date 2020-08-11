@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             if (sqlHelper.getAllUser().size()!=0) users = sqlHelper.getAllUser();
             else {
                 loginUser.setError(getText(R.string.usernameNotExist));
-                Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
                 return;
             }
             if (isValidEmail(loginUser.getEditText().getText())){
@@ -124,28 +124,28 @@ public class LoginActivity extends AppCompatActivity {
                                     startActivity(intent);
                                 } else {
                                     loginPass.setError(getText(R.string.incorrectPassword));
-                                    Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                             } else {
                                 loginUser.setError(getText(R.string.usernameNotExist));
-                                Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         }
                     } else {
                         loginUser.setError(getText(R.string.usernameNotExist));
-                        Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
                         return;
                     }
                 } else {
                     loginUser.setError(getText(R.string.username_empty));
-                    Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
                     return;
                 }
             } else {
                 loginUser.setError(getText(R.string.invalid_email));
-                Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
                 return;
             }
         }
