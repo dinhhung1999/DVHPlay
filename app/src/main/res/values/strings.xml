@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DVH Play</string>
+    <string name="app_name" translatable="false">HTH Play</string>
 
     //MAIN
     <string name="message_request_permission_read_phone_state">We need permission to continue</string>

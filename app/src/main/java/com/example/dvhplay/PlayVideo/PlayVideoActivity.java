@@ -737,7 +737,7 @@ public class PlayVideoActivity extends AppCompatActivity implements SeekBar.OnSe
             if (comments.size()>0){
                 int i =0;
                 do {
-                    if (comments.get(i).getVideo_id() == video.getId() && comments.get(i).getUser_id() == user_id) lastComments.add(comments.get(comments.size()-1-i));
+                    lastComments.add(comments.get(comments.size()-1-i));
                     i++;
                 } while (i<3 && comments.size()>i);
                 if (lastComments.size()>0){

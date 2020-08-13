@@ -130,7 +130,6 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 loginUser.setError(getText(R.string.usernameNotExist));
 //                                Toast.makeText(getBaseContext(),getText(R.string.login_failed),Toast.LENGTH_SHORT).show();
-                                return;
                             }
                         }
                     } else {

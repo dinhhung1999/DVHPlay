@@ -28,7 +28,6 @@ public class ServiceNotification extends Service {
 
 //         set sau bao lâu thì check 1 lần ở đây anh để 5000 =5s
 //        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 5000, pendingUngdung);
-
         return START_STICKY;
     }
 

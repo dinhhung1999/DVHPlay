@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">DVH Play</string>
-
     //MAIN
     <string name="message_request_permission_read_phone_state">Chúng tôi cần được cấp quyền để tiếp tục</string>
     <string name="tilte_dialog_check_network">Không có kết nối mạng</string>
